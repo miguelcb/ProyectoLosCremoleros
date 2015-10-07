@@ -4,19 +4,20 @@
     ViewBag.Title = "Registro";
 }
 
+<div style="position: relative; padding: 90px 0; background-color: #eee;">
+@Html.Partial("Menu")
 @using (Html.BeginForm())
 {
-
     @Html.AntiForgeryToken()
-    
+
     @Html.HiddenFor(model => Model.TextoDepartamento)
     @Html.HiddenFor(model => Model.TextoCiudad)
     @Html.HiddenFor(model => Model.TextDistrito)
     <div class="container fuente-pequeña">
         <h5 style="text-align:center;"><strong>Registro</strong></h5>
         <hr />
-        <h4><strong>Alumnos o Egresados UTP</strong></h4>
-        <p>Para acceder a tu cuenta de Empleabilidad de la UTP, solo necesitas ingresar con tu Usuario y Clave de Correo. Haz <a href="#" data-toggle="modal" data-target="#Modal-ingresar">clic aquí</a> para ingresar. En caso de presentarse algún inconveniente con tu ingreso, por favor comunicate con Mesa de Ayuda del Grupo UTP al 315-9600 Anexo 1444 o al correo <a href="mailto:mesadeayuda@utp.edu.pe">mesadeayuda@utp.edu.pe</a>.</p>
+        <h4><strong>Alumnos o Egresados IDAT</strong></h4>
+        <p>Para acceder a tu cuenta de Empleabilidad de IDAT, solo necesitas ingresar con tu Usuario y Clave de Correo. Haz <a href="#" data-toggle="modal" data-target="#Modal-ingresar">clic aquí</a> para ingresar. En caso de presentarse algún inconveniente con tu ingreso, por favor comunicate con Mesa de Ayuda del Grupo UTP al 315-9600 Anexo 1444 o al correo <a href="mailto:mesadeayuda@utp.edu.pe">mesadeayuda@utp.edu.pe</a>.</p>
         <hr />
         <h4><strong>Empresas</strong></h4>
         <p>Si desea registrar su empresa en nuestro Portal, por favor complete los datos a continuación.</p>
@@ -118,7 +119,7 @@
                     @*<input type="text" class="form-control fuente-pequeña" placeholder="Ingrese Departamento/Región/Estado">*@
                     @* @Html.TextBoxFor(model => model.DireccionDepartamentoLocacion, new { @class = "form-control", @placeholder = "Ingrese Departamento/Región/Estado" })*@
 
-                    @Html.DropDownList("DireccionDepartamentoLocacion", ViewData["Departamento"] as List<SelectListItem>, "-Seleccione-", new { @class = "form-control", @id = "DireccionDepartamentoLocacion" })
+                    @Html.DropDownList("DireccionDepartamentoLocacion", (SelectList)ViewBag.DireccionDepartamentoLocacion, "-Seleccione-", new { @class = "form-control", @id = "DireccionDepartamentoLocacion" })
                     @*  *@
                 </div>@Html.ValidationMessageFor(model => model.DireccionDepartamentoLocacion, "", new { @class = "text-danger" })
             </div>
@@ -128,7 +129,7 @@
                     @*<input type="text" class="form-control fuente-pequeña" placeholder="Ingrese Ciudad">*@
 
                     @*@Html.TextBoxFor(model => model.DireccionCiudadLocacion, new { @class = "form-control", @placeholder = "Ingrese Ciudad/Provincia" })*@
-                    @Html.DropDownList("DireccionCiudadLocacion", new SelectList(string.Empty, "Value", "Text"), "-Seleccione-", new { @class = "form-control" ,@id="DireccionCiudadLocacion" })
+                    @Html.DropDownList("DireccionCiudadLocacion", (SelectList)ViewBag.DireccionCiudadLocacion, "-Seleccione-", new { @class = "form-control", @id = "DireccionCiudadLocacion" })
 
                     
                 </div>@Html.ValidationMessageFor(model => model.DireccionCiudadLocacion, "", new { @class = "text-danger" })
@@ -141,7 +142,7 @@
 
                     @*<select class="form-control" id="DireccionDistritoLocacion" name="DireccionDistritoLocacion" data-val="true" data-val_required="Falta el distrito"></select>*@
 
-                    @Html.DropDownList("DireccionDistritoLocacion", new SelectList(string.Empty, "Value", "Text"), "-Seleccione-", new { @class = "form-control", @id = "DireccionDistritoLocacion" })
+                    @Html.DropDownList("DireccionDistritoLocacion", (SelectList)ViewBag.DireccionDistritoLocacion, "-Seleccione-", new { @class = "form-control", @id = "DireccionDistritoLocacion" })
 
                     @*@Html.TextBoxFor(model => model.DireccionDistritoLocacion, new { @class = "form-control", @placeholder = "Ingrese Distrito/Comuna" })*@
 
@@ -296,10 +297,10 @@
             </div>
             <br />
         </div>
-
-   
 }
-  
+@Html.Partial("Footer")
+</div>
+
 
 <script>
     //Este bloque sólo debe ir una vez, esto quiere decir que todo lo de adentro se ejecuta cuando toda la pagina se renderiza o muestra al c liente.

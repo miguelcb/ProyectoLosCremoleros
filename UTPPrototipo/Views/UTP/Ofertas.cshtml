@@ -6,27 +6,26 @@
 @{
     Layout = "~/Views/UTP/_LayoutUTP.cshtml";
     ViewBag.Title = "Oferta de Empresa";
+    string Tab = Request.Params.Get("Tab");
 }
 
-
+<script>window.selectedTab = '@Tab';</script>
 
 <link href="~/Content/font-awesome.css" rel="stylesheet" />
 <div class="container" style="margin-top:2px;">
     <div class="panel-group" id="datos-cuenta" role="tablist" aria-multiselectable="true">
-
         @{Html.RenderAction("VistaCabeceraUtp", "UTP");}
-       
     </div>
-
  
     <div class="panel-group" id="CriterioBusquedaPostulacion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="CabeceraColapsaBusqueda" style="padding: 2px 2px 2px 6px;">
-                <h5 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#CriterioBusquedaPostulacion" href="#ColapsaBusqueda" aria-expanded="true" aria-controls="ColapsaBusqueda" class="fuente-seccion">
-                        Búsqueda
-                    </a>
-                </h5>
+                <div class="panel-title">
+                    <div data-toggle="collapse" data-parent="#CriterioBusquedaPostulacion" data-target="#ColapsaBusqueda" aria-expanded="true" aria-controls="ColapsaBusqueda" class="fuente-seccion">
+                        <span role="button">Búsqueda</span>
+                        <span class="glyphicon pull-right" role="button"></span>
+                    </div>
+                </div>
             </div>
             <div id="ColapsaBusqueda" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="CabeceraColapsaBusqueda">
                 <div class="panel-body">
@@ -52,21 +51,17 @@
                     </table>
                 </div>
             </div>
-
-            
-
-
-
         </div>
 
 
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="CabeceraColapsaBusquedaAvanzada" style="padding: 2px 2px 2px 6px;">
-                <h5 class="panel-title">
-                    <a class="collapsed fuente-seccion" data-toggle="collapse" data-parent="#CriterioBusquedaPostulacion" href="#ColapsaBusquedaAvanzada" aria-expanded="false" aria-controls="ColapsaBusquedaAvanzada">
-                        Búsqueda avanzada
-                    </a>
-                </h5>
+                <div class="panel-title">
+                    <div class="collapsed fuente-seccion" data-toggle="collapse" data-parent="#CriterioBusquedaPostulacion" data-target="#ColapsaBusquedaAvanzada" aria-expanded="false" aria-controls="ColapsaBusquedaAvanzada">
+                        <span role="button">búsqueda avanzada</span>
+                        <span class="glyphicon pull-right" role="button"></span>
+                    </div>
+                </div>
             </div>
             <div id="ColapsaBusquedaAvanzada" class="panel-collapse collapse" role="tabpanel" aria-labelledby="CabeceraColapsaBusquedaAvanzada">
                 <div class="panel-body fuente-pequeña">
@@ -114,6 +109,12 @@
                                 <span class="input-group-addon">Remuneración</span>
                                 @Html.TextBoxFor(model => model.RemuneracionOfrecida, new { @class = "form-control", @placeholder = "Buscar Remuneración", @Id = "RemuneracionOfrecida" })
                                
+                            </div>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">Tipo de trabajo</span>
+                                @Html.DropDownListFor(model => model.TipoTrabajoUTP, null, "- Seleccione -", htmlAttributes: new { @class = "form-control" })
+
                             </div>
 
                             <!--Dejabajo de carrera 2-->
@@ -167,44 +168,36 @@
                 </div>
             </div>
         </div>
-
-        @*<br />*@
-
-        @*<h5>Ofertas por Activar</h5>*@
-
     </div>
-    <div id="ResultadoBusqueda">
-    </div>
+
+    <ul id="offers-tabs" class="nav nav-justified nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#" aria-controls="all" role="tab" data-toggle="tab">Todos</a></li>
+        <li role="presentation"><a href="#" role="tab" aria-controls="entries-position" data-toggle="tab">Posiciones de entrada</a></li>
+        <li role="presentation"><a href="#" role="tab" aria-controls="practices" data-toggle="tab">Prácticas</a></li>
+        <li role="presentation"><a href="#" role="tab" aria-controls="jobs" data-toggle="tab">Empleo</a></li>
+    </ul>
+
+    <div id="ResultadoBusqueda" class="result" style="margin-top: 16px;"></div>
+
     <br />
-   
 </div>
 <script>
-
     $(document).ready(function () {
         $("#divFinalCabecera").removeClass("color-paleta1 color-paleta2 color-paleta3 color-paleta5 color-paleta6 color-paleta7 color-paleta8 color-paleta9").addClass("color-paleta2")
+        $('#PestañaOfertas').css('backgroundColor', '#f00');
         var codigoTipoConocimiento = $('#TipoConocimientoIdListaValor').val();
 
         //ESE ES LA CAJA, LA ACCION Y EL CONTROLADOR
         AutoCompleteTextDemo('#Conocimientos', '@Url.Action("ListarDatosEspecificos", "OfertaInformacionAdicional")' + '?codigoTipo=' + codigoTipoConocimiento, '#Conocimientos', '#TipoConocimientoIdListaValor', 'option', 'appendTo', '.eventInsForm');
-
-        var oferta = {
-            PalabraClave: $('#PalabraClave').val(),
-            nroPaginaActual: 1,
-        };
-
-        //Cargar("resultadobusqueda", "/UTP/BusquedaSimpleEmpresasActivas", empresa);
-
-        Cargar("ResultadoBusqueda", '@Url.Action("BuscarOfertas", "UTP")', oferta);
     });
 
 
     $('#buscar').click(function () {
         var oferta = {
             PalabraClave: $('#PalabraClave').val(),
+            TipoTrabajoUTP: $('#TipoTrabajoUTP').val(),
             nroPaginaActual: 1,
         };
-
-        //Cargar("resultadobusqueda", "/UTP/BusquedaSimpleEmpresasActivas", empresa);
 
         Cargar("ResultadoBusqueda", '@Url.Action("BuscarOfertas", "UTP")', oferta);
     });
@@ -216,7 +209,7 @@
             CargoOfrecido: $('#CargoOfrecido').val(),
             IdSectorutp: $('#IdSectorutp').val(),
             IdTipoContratoutp: $('#IdTipoContratoutp').val(),
-            AExperiencia: $('#AExperiencia').val(), 
+            AExperiencia: $('#AExperiencia').val(),
             RemuneracionOfrecida: $('#RemuneracionOfrecida').val(),
             IdTipoEstudioutp: $('#IdTipoEstudioutp').val(),
             Conocimientos: $('#Conocimientos').val(),
@@ -224,16 +217,16 @@
             IdEstadoOferta: $('#IdEstadoOferta').val(),
             InformacionAdicional: $('#TipoConocimientoIdListaValor').val(),
             Carrera: $('#Carrera').val(),
+            TipoTrabajoUTP: $('#TipoTrabajoUTP').val(),
             nroPaginaActual: 1,
         };
-        //debugger;
-        //Cargar("resultadobusqueda", "/UTP/BusquedaAvanzadaEmpresas", oferta);
+
+        console.log(oferta);
 
         Cargar("ResultadoBusqueda", '@Url.Action("UTP_ObtenerofertasAvanzada", "UTP")', oferta);
     });
 
     function Cargar(id, link, entidad) {
-        //debugger;
         $.ajax({
             url: link,
             contentType: 'application/json; charset=utf-8',
@@ -243,8 +236,6 @@
         })
         .success(function (result) {
             $("#" + id).html(result);
-            //alert(result);
-            //console.log(result);
         })
         .error(function (xhr, status) {
             console.log(xhr);
@@ -259,7 +250,7 @@
             nroPaginaActual: nroPagina,
 
         };
-        //Cargar("resultadobusqueda", "/UTP/BusquedaSimpleEmpresasActivas", empresa);
+
         Cargar("ResultadoBusqueda", '@Url.Action("BuscarOfertas", "UTP")', oferta);
     }
 
@@ -279,14 +270,73 @@
             IdEstadoOferta: $('#IdEstadoOferta').val(),
             InformacionAdicional: $('#TipoConocimientoIdListaValor').val(),
             Carrera: $('#Carrera').val(),
+            TipoTrabajoUTP: $('#TipoTrabajoUTP').val(),
             nroPaginaActual: nroPagina,
-
         };
 
-        //Cargar("resultadobusqueda", "/UTP/BusquedaAvanzadaEmpresas", oferta);
         Cargar("ResultadoBusqueda", '@Url.Action("UTP_ObtenerofertasAvanzada", "UTP")', oferta);
     }
 
+    var Offers = {
+        query: function() {
+            return {
+                NombreComercial: $('#NombreComercial').val(),
+                IdTipoCargoutp: $('#IdTipoCargoutp').val(),
+                CargoOfrecido: $('#CargoOfrecido').val(),
+                IdSectorutp: $('#IdSectorutp').val(),
+                IdTipoContratoutp: $('#IdTipoContratoutp').val(),
+                AExperiencia: $('#AExperiencia').val(),
+                RemuneracionOfrecida: $('#RemuneracionOfrecida').val(),
+                IdTipoEstudioutp: $('#IdTipoEstudioutp').val(),
+                Conocimientos: $('#Conocimientos').val(),
+                NumeroPostulante: $('#NumeroPostulante').val(),
+                IdEstadoOferta: $('#IdEstadoOferta').val(),
+                InformacionAdicional: $('#TipoConocimientoIdListaValor').val(),
+                Carrera: $('#Carrera').val(),
+                TipoTrabajoUTP: $('#TipoTrabajoUTP').val(),
+                nroPaginaActual: 1,
+            };
+        },
+        all: function () {
+            $('#TipoTrabajoUTP').val('');
+            Cargar('ResultadoBusqueda', '@Url.Action("UTP_ObtenerofertasAvanzada", "UTP")', this.query())
+        },
+        entriesPosition: function () {
+            $('#TipoTrabajoUTP').val('TTUPOE');
+            Cargar('ResultadoBusqueda', '@Url.Action("UTP_ObtenerofertasAvanzada", "UTP")',  this.query())
+        },
+        practices: function () {
+            $('#TipoTrabajoUTP').val('TTUPRA');
+            Cargar('ResultadoBusqueda', '@Url.Action("UTP_ObtenerofertasAvanzada", "UTP")', this.query())
+        },
+        jobs: function () {
+            $('#TipoTrabajoUTP').val('TTUEMP');
+            Cargar('ResultadoBusqueda', '@Url.Action("UTP_ObtenerofertasAvanzada", "UTP")', this.query())
+        },
+        tabs: function () {
+            var sup = this,
+                wrapperSelector = '#offers-tabs',
+                $allTab = $(wrapperSelector + ' [aria-controls=all]'),
+                $entriesPositionTab = $(wrapperSelector + ' [aria-controls=entries-position]'),
+                $practicesTab = $(wrapperSelector + ' [aria-controls=practices]'),
+                $jobs = $(wrapperSelector + ' [aria-controls=jobs]');
 
+            $allTab.on('click', function (e) { e.preventDefault(); sup.all(); });
+            $entriesPositionTab.on('click', function (e) { e.preventDefault(); sup.entriesPosition(); });
+            $practicesTab.on('click', function (e) { e.preventDefault(); sup.practices(); });
+            $jobs.on('click', function (e) { e.preventDefault(); sup.jobs(); });
+        }
+    };
 
+    Offers.tabs();
+
+    var ViewOffersTabs = {
+        selector: '#offers-tabs',
+        Todos: function () { $(this.selector + ' [aria-controls=all]').click(); },
+        PosicionesDeEntrada: function () { $(this.selector + ' [aria-controls=entries-position]').click(); },
+        Practicas: function () { $(this.selector + ' [aria-controls=entries-practices]').click(); },
+        Empledo: function () { $(this.selector + ' [aria-controls=entries-jobs]').click(); }
+    };
+
+    ViewOffersTabs[selectedTab || 'Todos']();
 </script>

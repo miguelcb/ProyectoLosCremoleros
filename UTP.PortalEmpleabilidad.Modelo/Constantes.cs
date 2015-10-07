@@ -49,6 +49,7 @@ namespace UTP.PortalEmpleabilidad.Modelo
         public static int IDLISTA_Departamento = 47;
         public static int IDLISTA_Provincia = 48;
         public static int IDLISTA_FUENTE_CONVENIO = 41;
+        public static int IDLISTA_ESTADO_CONVENIO = 42;
 
         public static int IDLISTA_OFERTA_CALIFICACION_ENCUESTA = 51; //Verificar este nro en bd de UTP Producción.
         public static int IDLISTA_TIPO_TRABAJO_UTP = 52;
@@ -123,7 +124,7 @@ namespace UTP.PortalEmpleabilidad.Modelo
 
         #region Tipos de Estudio
         public static string TIPO_ESTUDIO_UNIVERSITARIO = "TEUNIV";
-
+        public static string TIPO_ESTUDIO_PRINCIPAL = "TETECN";
         #endregion
 
         #region Colores Pie
@@ -160,7 +161,25 @@ namespace UTP.PortalEmpleabilidad.Modelo
 
         #endregion
 
-        public static string NOMBRE_UTP = "Universidad Tecnológica del Perú-UTP";
+        #region contenidos
+        public static string CONTENIDO_NOTICIAS_EVENTOS = "1";
+        public static string CONTENIDO_AREA_EMPLEABILIDAD = "2";
+        public static string CONTENIDO_SERVICIOS = "3";
+        public static string CONTENIDO_NOTICIAS = "4";
+        public static string CONTENIDO_TESTIMONIOS = "5";
+        public static string CONTENIDO_EMPLEADORES = "6";
+        public static string CONTENIDO_EVENTOS = "7";
+        public static string CONTENIDO_EMPRESAS = "8";
+        public static string CONTENIDO_ALUMNOS = "9";
+        public static string CONTENIDO_STAFF = "10";
+        public static string CONTENIDO_SE_VIENE = "11";
+        public static string CONTENIDO_EMPRESAS_OPINAN = "12";
+        public static string CONTENIDO_EXITO_IMPARABLE = "13";
+        public static string CONTENIDO_NOS_CUENTAN = "14";
+        #endregion
+
+        public static string NOMBRE_UTP = "Instituto IDAT";
+        public static string CORREO_PRINCIPAL = "empleos@idat.edu.pe";
 
         public const string TICKET_EMITIDO = "EVTKEM";
 

@@ -172,11 +172,11 @@ namespace UTP.PortalEmpleabilidad.Logica
 
             return vistaofertalumno;
         }
-        public List<Oferta> BuscarFiltroOfertasAlumno(int IdAlumno, string PalabraClave, int PagActual, int NumRegistros)
+        public List<Oferta> BuscarFiltroOfertasAlumno(int IdAlumno, string PalabraClave, string TipoTrabajoUTP, int PagActual, int NumRegistros)
         {
             List<Oferta> listaOferta = new List<Oferta>();
 
-            DataTable dtResultado = adOferta.BuscarFiltroOfertasAlumno(IdAlumno, PalabraClave, PagActual, NumRegistros);
+            DataTable dtResultado = adOferta.BuscarFiltroOfertasAlumno(IdAlumno, PalabraClave, TipoTrabajoUTP, PagActual, NumRegistros);
 
             for (int i = 0; i <= dtResultado.Rows.Count - 1; i++)
             {
@@ -360,7 +360,7 @@ namespace UTP.PortalEmpleabilidad.Logica
 
             //18FEB: Se obtiene las carreras de UTP y se quitan las ya seleccionadas.
             LNGeneral lnGeneral = new LNGeneral();
-            List<ListaValor> listaCarrerasUTP = lnGeneral.ObtenerListaValor(Constantes.IDLISTA_DE_CARRERA).Where(m => m.IdListaValorPadre == "TEUNIV").ToList(); //Se obtienen todas las carreras
+            List<ListaValor> listaCarrerasUTP = lnGeneral.ObtenerListaValor(Constantes.IDLISTA_DE_CARRERA).Where(m => m.IdListaValorPadre == Constantes.TIPO_ESTUDIO_PRINCIPAL).ToList(); //Se obtienen todas las carreras
 
 
             DataSet dsResultado = adOferta.ObtenerPorId(idOferta);
@@ -383,8 +383,15 @@ namespace UTP.PortalEmpleabilidad.Logica
                 oferta.TipoContratoIdListaValor = Convert.ToString(dsResultado.Tables[0].Rows[0]["TipoContrato"]);
                 oferta.TipoContrato.Valor = Convert.ToString(dsResultado.Tables[0].Rows[0]["TipoContratoDescripcion"]);
                 
-                
-                oferta.RemuneracionOfrecida = Convert.ToDecimal(dsResultado.Tables[0].Rows[0]["RemuneracionOfrecida"]);
+                if (dsResultado.Tables[0].Rows[0]["RemuneracionOfrecida"] == System.DBNull.Value)
+                {
+                    oferta.RemuneracionOfrecida = null;
+                }
+                else
+                {
+                    oferta.RemuneracionOfrecida = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["RemuneracionOfrecida"]);
+                }
+
                 oferta.Horario = Convert.ToString(dsResultado.Tables[0].Rows[0]["Horario"]);
                 oferta.AreaEmpresa = Convert.ToString(dsResultado.Tables[0].Rows[0]["AreaEmpresa"]);
 
@@ -425,8 +432,26 @@ namespace UTP.PortalEmpleabilidad.Logica
 
                 oferta.CicloMinimoCarreraUTP = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["CicloMinimoCarreraUTP"]);
                 oferta.EstadoCarreraUTP = Convert.ToString(dsResultado.Tables[0].Rows[0]["EstadoCarreraUTP"]);
-                oferta.ExperienciaGeneral = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["MesesExperienciaTotal"]);
-                oferta.ExperienciaPosicionesSimilares = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["MesesExperienciaTipoTrabajo"]);
+
+
+                if (dsResultado.Tables[0].Rows[0]["MesesExperienciaTotal"] == System.DBNull.Value)
+                {
+                    oferta.ExperienciaGeneral = null;
+                }
+                else
+                {
+                    oferta.ExperienciaGeneral = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["MesesExperienciaTotal"]);
+                }
+
+
+                if (dsResultado.Tables[0].Rows[0]["MesesExperienciaTipoTrabajo"] == System.DBNull.Value)
+                {
+                    oferta.ExperienciaPosicionesSimilares = null;
+                }
+                else
+                {
+                    oferta.ExperienciaPosicionesSimilares = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["MesesExperienciaTipoTrabajo"]);
+                }
 
                 //05MAR15: Para las nuevas ofertas este campo siempre está con data. Se agrega la validación para compatibilidad con ofertas anteriores.
                 oferta.FechaFinProceso = Convert.ToDateTime(dsResultado.Tables[0].Rows[0]["FechaFinProceso"] == System.DBNull.Value ? new DateTime(1, 1, 1900) : dsResultado.Tables[0].Rows[0]["FechaFinProceso"]);
@@ -455,7 +480,7 @@ namespace UTP.PortalEmpleabilidad.Logica
                 estudio.FechaModificacion               = Convert.ToDateTime(filaEstudio["FechaModificacion"]);
                  
                 #region Se separan las carrearas universitarias UTP.
-                if (estudio.TipoDeEstudio.IdListaValor == "TEUNIV") //Tipo de Estudio Universitario de UTP.
+                if (estudio.TipoDeEstudio.IdListaValor == Constantes.TIPO_ESTUDIO_PRINCIPAL) //Tipo de Estudio Universitario de UTP.
                 {
                     var carreraEncontrada = listaCarrerasUTP.Where(m => m.Valor == estudio.Estudio).FirstOrDefault();
 
@@ -566,10 +591,11 @@ namespace UTP.PortalEmpleabilidad.Logica
                 oferta = new Oferta();
 
                 oferta.IdOferta = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["IdOferta"]);
-                oferta.FechaSeguimiento = Convert.ToDateTime(dsResultado.Tables[0].Rows[0]["FechaSeguimiento"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["FechaSeguimiento"]);
-                oferta.NumeroInvitados = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["NumeroInvitados"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["NumeroInvitados"]);
-                oferta.NumeroEntrevistados = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["NumeroEntrevistados"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["NumeroEntrevistados"]);
-                oferta.NumeroContratados = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["NumeroContratados"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["NumeroContratados"]);
+                oferta.FechaSeguimiento = (dsResultado.Tables[0].Rows[0]["FechaSeguimiento"] == System.DBNull.Value ? (DateTime?)null : Convert.ToDateTime(dsResultado.Tables[0].Rows[0]["FechaSeguimiento"]));
+                oferta.NumeroPostulantes = dsResultado.Tables[0].Rows[0]["NumeroPostulantes"] == System.DBNull.Value ? (Int32?)null : Convert.ToInt32(dsResultado.Tables[0].Rows[0]["NumeroPostulantes"]);
+                oferta.NumeroInvitados = dsResultado.Tables[0].Rows[0]["NumeroInvitados"] == System.DBNull.Value ? (Int32?)null : Convert.ToInt32(dsResultado.Tables[0].Rows[0]["NumeroInvitados"]);
+                oferta.NumeroEntrevistados = dsResultado.Tables[0].Rows[0]["NumeroEntrevistados"] == System.DBNull.Value ? (Int32?)null : Convert.ToInt32(dsResultado.Tables[0].Rows[0]["NumeroEntrevistados"]);
+                oferta.NumeroContratados = dsResultado.Tables[0].Rows[0]["NumeroContratados"] == System.DBNull.Value ? (Int32?)null : Convert.ToInt32(dsResultado.Tables[0].Rows[0]["NumeroContratados"]);
                 oferta.ConvenioRegistrado = Convert.ToBoolean(dsResultado.Tables[0].Rows[0]["ConvenioRegistrado"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["ConvenioRegistrado"]);
                 oferta.Contacto = Convert.ToString(dsResultado.Tables[0].Rows[0]["Contacto"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["Contacto"]);
                 oferta.DatosContacto = Convert.ToString(dsResultado.Tables[0].Rows[0]["DatosContacto"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["DatosContacto"]);
@@ -580,6 +606,14 @@ namespace UTP.PortalEmpleabilidad.Logica
                 oferta.ContratadosUTP = Convert.ToInt32(dsResultado.Tables[0].Rows[0]["EncuestaContratadosUTP"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["EncuestaContratadosUTP"]);
                 oferta.ContratadosOtros = Convert.ToString(dsResultado.Tables[0].Rows[0]["EncuestaContratadosOtros"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["EncuestaContratadosOtros"]);
                 oferta.TipoTrabajoUTP = Convert.ToString(dsResultado.Tables[0].Rows[0]["TipoTrabajoUTP"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["TipoTrabajoUTP"]);
+                //Seguimiento:
+                oferta.SeguimientoCalificacion = Convert.ToString(dsResultado.Tables[0].Rows[0]["SeguimientoCalificacion"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["SeguimientoCalificacion"]);
+                oferta.SeguimientoNroInvitados = dsResultado.Tables[0].Rows[0]["SeguimientoNroInvitados"] == System.DBNull.Value ? (Int32?)null : Convert.ToInt32(dsResultado.Tables[0].Rows[0]["SeguimientoNroInvitados"]);
+                oferta.SeguimientoContratados = dsResultado.Tables[0].Rows[0]["SeguimientoContratados"] == System.DBNull.Value ? (Int32?)null : Convert.ToInt32(dsResultado.Tables[0].Rows[0]["SeguimientoContratados"]);
+                oferta.SeguimientoContratadosOtros = Convert.ToString(dsResultado.Tables[0].Rows[0]["SeguimientoContratadosOtros"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["SeguimientoContratadosOtros"]);
+
+                oferta.TipoTrabajoUTP = Convert.ToString(dsResultado.Tables[0].Rows[0]["TipoTrabajoUTP"] == System.DBNull.Value ? null : dsResultado.Tables[0].Rows[0]["TipoTrabajoUTP"]);
+
             }
             return oferta;
         }
@@ -614,6 +648,36 @@ namespace UTP.PortalEmpleabilidad.Logica
             }
 
             return postulantes;
+        }
+
+        public List<OfertaPostulante> ObtenerPostulantesPorIdOfertaSimple(int idOferta)
+        {
+            List<OfertaPostulante> postulantes = new List<OfertaPostulante>();
+
+            DataTable dtResultado = adOferta.ObtenerPostulantesPorIdOfertaSimple(idOferta);
+
+            foreach (DataRow fila in dtResultado.Rows)
+            {
+                OfertaPostulante postulante = new OfertaPostulante();
+                postulante.IdAlumno = Convert.ToInt32(fila["IdAlumno"]);
+                postulante.IdOferta = Convert.ToInt32(fila["IdOferta"]);
+                postulante.IdOfertaPostulante = Convert.ToInt32(fila["IdOfertaPostulante"]);
+                postulante.FaseOferta.Valor = Convert.ToString(fila["FaseOfertaDescripcion"]);
+                postulante.FechaPostulacion = Convert.ToDateTime(fila["FechaPostulacion"]);
+                postulante.Alumno = new Alumno() { Nombres = Convert.ToString(fila["AlumnoNombres"]), Apellidos = Convert.ToString(fila["AlumnoApellidos"]) };
+                postulante.CorreoElectronico = Convert.ToString(fila["CorreoElectronico"]);
+                postulante.Usuario = Convert.ToString(fila["Usuario"]);
+                postulante.FaseOferta.Peso = Convert.ToInt32(fila["FasePeso"]);
+
+                postulantes.Add(postulante);
+            }
+
+            return postulantes;
+        }
+
+        public DataTable ObtenerPostulantesPorIdOfertaExcel(int idOferta)
+        {
+            return adOferta.ObtenerPostulantesPorIdOferta(idOferta);
         }
 
         public List<OfertaFase> Obtener_OfertaFase(int idOferta)
@@ -760,7 +824,7 @@ namespace UTP.PortalEmpleabilidad.Logica
         public void CompletarEncuesta(OfertaEncuesta encuesta)
         {
             if (encuesta.ContratadosOtros == null) encuesta.ContratadosOtros = "";
-
+            
             adOferta.CompletarEncuesta(encuesta);
         }
     }

@@ -69,7 +69,7 @@ namespace UTPPrototipo.Controllers
         public JsonResult ListarEstudio(string query)
         {
             LNGeneral lngeneral = new LNGeneral();
-            var resultado = lngeneral.ObtenerListaValorPorIdPadre(Constantes.TIPO_ESTUDIO_UNIVERSITARIO);
+            var resultado = lngeneral.ObtenerListaValorPorIdPadre(Constantes.TIPO_ESTUDIO_PRINCIPAL);
             var result = resultado.Where(s => s.Valor.ToLower().Contains(query.ToLower())).Select(c => new { Value = c.IdListaValor, Label = c.Valor }).ToList();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -666,6 +666,14 @@ namespace UTPPrototipo.Controllers
             return PartialView("_VistaNuevasPostulaciones", lista);
         }
 
+        public void ExportarPostulantesOferta(string id)
+        {
+            int idOferta = Convert.ToInt32(Helper.Desencriptar(id));
+            DataTable export = lnOferta.ObtenerPostulantesPorIdOfertaExcel(idOferta);
+
+            Helper.Export2ExcelDownload(export, "Postulantes-Oferta" + idOferta + new DateTime());
+        }
+
         public ActionResult ObtenerNuevosMensajes()
         {
             Ticket ticket = (Ticket)Session["Ticket"];
@@ -681,7 +689,6 @@ namespace UTPPrototipo.Controllers
 
         public ActionResult VistaOfertaAnuncio(Oferta oferta)
         {
-
             return PartialView("_VistaOfertaAnuncio", oferta);
         }
 
@@ -1421,32 +1428,11 @@ namespace UTPPrototipo.Controllers
             LNOferta lnOferta = new LNOferta();
             
             //Se buscan la ofertas de la empresa que se encuentran en estado OFERCV (Fin de recepción de CVs)
-            List<VistaEmpresaOferta> lista = lnOferta.ObtenerOfertasPorIdEmpresa(ticket.IdEmpresa).Where(p => (p.NombreEstado == Constantes.OFERTA_ESTADO_FINRECEPCIONCVS || p.NombreEstado == Constantes.OFERTA_ESTADO_ACTIVA) && p.FechaFinOferta < DateTime.Now).ToList();
+            List<VistaEmpresaOferta> lista = lnOferta.ObtenerOfertasPorIdEmpresa(ticket.IdEmpresa).Where(p => (p.NombreEstado == Constantes.OFERTA_ESTADO_FINRECEPCIONCVS || p.NombreEstado == Constantes.OFERTA_ESTADO_ACTIVA) && p.FechaFinOferta.AddDays(20) < DateTime.Now).ToList();
 
             return lista;
-
-            ////Si se encuentran filas => se obienen los cargos y se llena una variable temporal.
-            //if (lista.Count() > 0)
-            //{
-            //    StringBuilder ofertasEncontradas = new StringBuilder();
-            //    ofertasEncontradas.Append("Antes de continuar debe cerrar las siguientes ofertas: ");
-            //    ofertasEncontradas.Append(Environment.NewLine);
-
-            //    foreach (var oferta in lista)
-            //    {
-            //        ofertasEncontradas.Append(oferta.CargoOfrecido);
-            //        ofertasEncontradas.Append(Environment.NewLine);
-            //    }
-
-            //    //En el vista Publicacion.html se lee este TempData y se muestra el mensaje al usuario.
-            //    TempData["msjOfertasEnOFERCV"] = ofertasEncontradas.ToString();
-
-            //    //Se redirecciona a la lista de ofertas.
-            //    return RedirectToAction("Publicacion");
-            //}
-           
-            
         }
+
         public ActionResult ListarListaValor(string Id)
         {
             LNGeneral lngeneral = new LNGeneral();
@@ -1473,9 +1459,9 @@ namespace UTPPrototipo.Controllers
         {
             LNMensaje lnMensaje = new LNMensaje();
             LNOferta lnOferta = new LNOferta();
-            string correoDe, nombreOferta, deUsuario = "";
+            //string correoDe, nombreOferta, deUsuario = "";
             lnOferta.CompletarEncuesta(encuesta);
-            
+            /*
             List<OfertaPostulante> postulantes = new List<OfertaPostulante>();
             postulantes = lnOferta.ObtenerPostulantesPorIdOferta(encuesta.IdOferta);
 
@@ -1500,7 +1486,7 @@ namespace UTPPrototipo.Controllers
                 mensaje.MensajeTexto = "Estimado postulante,</br>"+ 
                                         "Te comunicamos que el proceso de selección al que postulaste ha culminado.";
                 lnMensaje.Insertar(mensaje);
-            }
+            }*/
             TempData["MsjExitoCerrarOferta"] = "La oferta se ha cerrado con éxito";
             //Se redirecciona a la lista de ofertas:
             return RedirectToAction("Publicacion", "Empresa");
@@ -1514,7 +1500,7 @@ namespace UTPPrototipo.Controllers
         public ActionResult AgregarCarreras(string codigos)
         {
             LNGeneral lnGeneral = new LNGeneral();
-            List<ListaValor> listaCarrerasUTP = lnGeneral.ObtenerListaValor(Constantes.IDLISTA_DE_CARRERA).Where(m => m.IdListaValorPadre == "TEUNIV").ToList();
+            List<ListaValor> listaCarrerasUTP = lnGeneral.ObtenerListaValor(Constantes.IDLISTA_DE_CARRERA).Where(m => m.IdListaValorPadre == Constantes.TIPO_ESTUDIO_PRINCIPAL).ToList();
 
             //Se obtiene la lista actual:
             List<OfertaEstudio> listaSeleccionados = (List<OfertaEstudio>)(Session["CarrerasSeleccionadas"]);
@@ -1527,7 +1513,7 @@ namespace UTPPrototipo.Controllers
                 //Se busca en la lista de la BD:
                 ListaValor carrera = listaCarrerasUTP.Where(m => m.IdListaValor == listaCodigos[i]).FirstOrDefault();
                 OfertaEstudio ofertaEstudio = new OfertaEstudio ();
-                ofertaEstudio.TipoDeEstudioIdListaValor = "TEUNIV"; // listaCodigos[i]; //aca buscar y traer la lista de la BD.
+                ofertaEstudio.TipoDeEstudioIdListaValor = Constantes.TIPO_ESTUDIO_PRINCIPAL; // listaCodigos[i]; //aca buscar y traer la lista de la BD.
                 ofertaEstudio.CodigoCarrera = listaCodigos[i]; //Este código sirve para tenerlo como clave de la lista. Es el código de la carrera.
                 ofertaEstudio.Estudio = carrera.Valor;
                 listaSeleccionados.Add(ofertaEstudio);
@@ -1547,7 +1533,7 @@ namespace UTPPrototipo.Controllers
         public ActionResult QuitarCarreras(string codigos)
         {
             LNGeneral lnGeneral = new LNGeneral();
-            List<ListaValor> listaCarrerasUTP = lnGeneral.ObtenerListaValor(Constantes.IDLISTA_DE_CARRERA).Where(m => m.IdListaValorPadre == "TEUNIV").ToList();
+            List<ListaValor> listaCarrerasUTP = lnGeneral.ObtenerListaValor(Constantes.IDLISTA_DE_CARRERA).Where(m => m.IdListaValorPadre == Constantes.TIPO_ESTUDIO_PRINCIPAL).ToList();
 
             List<OfertaEstudio> listaSeleccionados = (List<OfertaEstudio>)(Session["CarrerasSeleccionadas"]);
             List<ListaValor> listaDisponibles = (List<ListaValor>)(Session["CarrerasDisponibles"]);

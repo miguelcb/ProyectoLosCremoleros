@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="~/img/IDAT/favicon.ico">
     <title>Portal de Empleabilidad: UTP - @ViewBag.Title</title>
     @*@Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
@@ -74,7 +75,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:rgb(240, 240, 240);border:0px;">
         <div class="container">
 
-            <a href="../UTP/Index"><img src="~/img/LogoUTPPE2.png" class="LogoUTPPE2" /></a>
+            <a href="../UTP/Index"><img src="~/img/IDAT/logo.png" class="LogoUTPPE2" /></a>
             <div class="navbar-header posicion-menu">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="margin: 3px 5px 3px 0px">
                     <span class="icon-bar"></span>
@@ -83,69 +84,42 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse" style="border:0px;background-color:transparent;">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" style="margin-top: 11px;">
                     <li>
-                        @*<a class="btn btn-default navbar-btn Boton_pestana color-paleta1" href="..\UTP\Index" style="padding: 2px 0px 2px 0px;color:white;">Mi Portal</a>*@
-                        @*@Html.ActionLink("Mi Portal", "Index", null, new { @class = "btn btn-default navbar-btn Boton_pestana color-paleta1", @style = "padding: 2px 0px 2px 0px; color: white;" })*@
-                        <a class="btn btn-default navbar-btn Boton_pestana color-paleta1" href=@Url.Action("Index", "UTP") style="padding: 2px 0px 2px 0px; color: white;">Mi Portal</a>
+                        <a class="btn btn-default navbar-btn Boton_pestana" id="PestañaIndex" href=@Url.Action("Index", "UTP") style="padding: 2px 0px 2px 0px; color: white; background-color: #669999">Mi Portal</a>
                     </li>
                     <li>
-                        @*<a class="btn btn-default navbar-btn Boton_pestana color-paleta2" href="..\UTP\Empresas" style="padding: 2px 0px 2px 0px;color:white;">Empresas</a>*@
-                        @*@Html.ActionLink("Empresas", "Empresas", null, new { @class = "btn btn-default navbar-btn Boton_pestana color-paleta2", @style = "padding: 2px 0px 2px 0px; color: white;" })*@
-                        <a class="btn btn-default navbar-btn Boton_pestana color-paleta4" href=@Url.Action("Empresas", "UTP") style="padding: 2px 0px 2px 0px; color: white;">Empresas</a>
+                        <a class="btn btn-default navbar-btn Boton_pestana" id="PestañaEmpresa" href=@Url.Action("Empresas", "UTP") style="padding: 2px 0px 2px 0px; color: white; background-color: #669999">Empresas</a>
                     </li>
                     <li>
-                        @*<a class="btn btn-default navbar-btn Boton_pestana color-paleta3" href="..\UTP\Alumnos" style="padding: 2px 0px 2px 0px;color:white;">Alumnos</a>*@
-
-                        <a class="btn btn-default navbar-btn Boton_pestana color-paleta3" href=@Url.Action("Alumnos", "UTP") style="padding: 2px 0px 2px 0px;color:white;">Alumnos</a>
-
-
+                        <a class="btn btn-default navbar-btn Boton_pestana" id="PestañaAlumno" href=@Url.Action("Alumnos", "UTP") style="padding: 2px 0px 2px 0px; color: white; background-color: #669999">Alumnos</a>
                     </li>
                     <li>
-                        @*<a class="btn btn-default navbar-btn Boton_pestana color-paleta4" href="..\UTP\Oferta" style="padding: 2px 0px 2px 0px; color: white;">Ofertas</a>*@
-                        <a class="btn btn-default navbar-btn Boton_pestana color-paleta2" href=@Url.Action("Ofertas", "UTP") style="padding: 2px 0px 2px 0px; color: white;">Ofertas</a>
-
+                        <a class="btn btn-default navbar-btn Boton_pestana" id="PestañaOfertas" href=@Url.Action("Ofertas", "UTP") style="padding: 2px 0px 2px 0px; color: white; background-color:#669999">Ofertas</a>
                     </li>
                     <li>
-
-                        @*@Html.ActionLink("Eventos", "Eventos", null, new { @class = "btn btn-default navbar-btn Boton_pestana color-paleta5", @style = "padding: 2px 0px 2px 0px; color: white;" })*@
-                        <a class="btn btn-default navbar-btn Boton_pestana color-paleta5" href=@Url.Action("Eventos", "UTP") style="padding: 2px 0px 2px 0px; color: white;">Eventos</a>
+                        <a class="btn btn-default navbar-btn Boton_pestana" id="PestañaEventos" href=@Url.Action("Eventos", "UTP") style="padding: 2px 0px 2px 0px; color: white; background-color: #669999">Eventos</a>
                     </li>
                     <li>
-                        <a class="btn btn-default navbar-btn Boton_pestana color-paleta6" href=@Url.Action("Reportes", "UTP") style="padding: 2px 0px 2px 0px; color: white;">Reportes</a>
+                        <a class="btn btn-default navbar-btn Boton_pestana" id="PestañaReportes" href=@Url.Action("Reportes", "UTP") style="padding: 2px 0px 2px 0px; color: white; background-color: #669999">Reportes</a>
                     </li>
                     <li>
-                        @*<a class="btn btn-default navbar-btn Boton_pestana color-paleta7" href="..\UTP\Portal" style="padding: 2px 0px 2px 0px; color: white;">Contenido</a>*@
-                        <a class="btn btn-default navbar-btn Boton_pestana color-paleta7" href=@Url.Action("Portal", "UTP") style="padding: 2px 0px 2px 0px; color: white;">Contenido</a>
+                        <a class="btn btn-default navbar-btn Boton_pestana" id="PestañaPortal" href=@Url.Action("Portal", "UTP") style="padding: 2px 0px 2px 0px; color: white; background-color: #669999">Contenido</a>
                     </li>
                     @if (ViewBag.Rol != "ROLUTP")
                     {
                         <li>
-                        <a class="btn btn-default navbar-btn Boton_pestana color-paleta8" href=@Url.Action("Sistema", "UTP") style="padding: 2px 0px 2px 0px; color: white;">Sistema</a>
+                            <a class="btn btn-default navbar-btn Boton_pestana" id="PestañaSistema" href=@Url.Action("Sistema", "UTP") style="padding: 2px 0px 2px 0px; color: white; background-color: #669999">Sistema</a>
                         </li>
                     }                   
                     <li>
-                        <a class="btn btn-default navbar-btn Boton_pestana color-paleta9" href=@Url.Action("Convenios", "UTP") style="padding: 2px 0px 2px 0px; color: white;">Convenios</a>
+                        <a class="btn btn-default navbar-btn Boton_pestana" id="PestañaConvenios" href=@Url.Action("Convenios", "UTP") style="padding: 2px 0px 2px 0px; color: white; background-color: #669999">Convenios</a>
                     </li>
 
                 </ul>
-                <ul class="nav navbar-nav navbar-right" style="padding-right: 15px; ">
-                    @* @Html.ActionLink("Log Out", "Logout", "UTP")*@
-                    <li>
-                        <a href=@Url.Action("Index","Home") class="fui fa-2x menuOpcionesAd" style="padding: 2px 3px 0px 8px"><span class="color-icono-paleta2">%</span></a>
-                    </li>
-                    <li>
-                        <a href="https://es-es.facebook.com/UTPEmpleabilidad" target="_blank" class="fui fa-2x menuOpcionesAd" style=" padding:2px 3px 0px 8px;"><span class="color-icono-facebook">)</span></a>
-                    </li>
-                    <li>
-                        @*<a href="#" class="fui fa-2x"  style=" padding:2px 10px 0px 10px;"><span class="color-icono-paleta2">*</span></a>*@
-                        <a href=@Url.Action("Logout", "UTP") class="fui fa-2x menuOpcionesAd" style=" padding:2px 10px 0px 10px;"><span class="color-icono-paleta2">*</span></a>
-
-                    </li>
-                </ul>
-
+                @Html.Partial("MenuIntra")
             </div>
-            <div id="divFinalCabecera" class="final-cabecera color-paleta1"></div>
+            <div id="divFinalCabecera" class="final-cabecera" style="background-color:#FF0000"></div>
         </div>
     </div>
     <!--<div class="container body-content">-->
@@ -153,31 +127,10 @@
         @RenderBody()
 
         <footer>
-            <!-- start of #footer section -->
-            <style>
-                footer {
-                    height: auto;
-                    overflow: auto;
-                }
-
-                    footer .row:last-child {
-                        padding-top: 0;
-                    }
-            </style>
             <div class="container">
                 <div class="row">
-                    <div id="footer_left" class="span4">
-                    </div>
-                    <div id="footer_center" class="span4">
-                        &nbsp;
-                    </div>
-                </div>
-                <div class="row">
                     <div class="span7" style="padding-left:5px;">
-                        <div>Dirección de Empleabilidad | Email: <a href="mailto:empleabilidad@utp.edu.pe">empleabilidad@utp.edu.pe</a> | </div>
-                        <div>Teléfono: (+51) 315-9600 Anexo 1438 | Web: <a href="http://empleabilidad.utp.edu.pe/" target="_blank">empleabilidad.utp.edu.pe</a></div>
-                        <div>Mesa de Ayuda | Email: <a href="mailto:mesadeayuda@utp.edu.pe">mesadeayuda@utp.edu.pe</a> | Teléfono: (+51) 315-9606 | Web: <a href="http://mesadeayuda.utp.edu.pe/" target="_blank">mesadeayuda.utp.edu.pe</a></div>
-                        <div>Universidad Tecnológica del Perú | <a href="@Url.Action("PoliticasDePrivacidad", "Home")" target="_blank">Política de Privacidad</a> | <a href="@Url.Action("TerminosDeUso", "Home")" target="_blank">Términos y Condiciones</a> | <a href="@Url.Action("FAQ", "Home")" target="_blank">FAQ</a></div>
+                        @Html.Partial("FooterIntra")
                         &nbsp;
                     </div>
 
@@ -211,6 +164,72 @@
 </html>
 
 <script>
+    $(document).ready(function () {
+        $('body').on('focus', ".datepicker", function () {
+            $(this).datepicker({ dateFormat: 'dd/mm/yy' }).val();
+        });
+    });
+
+    var EmpresaExportar = function () {
+        console.log('EmpresaExportar');
+
+        var data = {
+            NombreComercial: $('#NombreComercial').val(),
+            IdEstadoEmpresa: $('#IdEstadoEmpresa').val(),
+            IdSector: $('#IdSector').val(),
+            RazonSocial: $('#RazonSocial').val(),
+            RUC: $('#RUC').val(),
+            NroOferta: $('#NroOferta').val(),
+            NroPostulante: $('#NroPostulante').val(),
+            PalabraClave: $('#PalabraClave').val()
+        };
+
+        window.location.href = '@Url.Action("BusquedaEmpresasExportar", "UTP")?' + $.param(data, true);
+    };
+
+    var AlumnosExportar = function () {
+        console.log('AlumnosExportar');
+
+        var data = {
+            TipoEstudio: $('#TipoEstudio').val(),
+            Alumno: $('#Alumno').val(),
+            Carrera: $('#Carrera').val(),
+            Ciclo: $('#Ciclo').val(),
+            Sexo: $('#Sexo').val(),
+            Distrito: $('#Distrito').val(),
+            SectorEmpresarial: $('#SectorEmpresarial').val(),
+            Conocimientos: $('#Conocimiento').val(),
+            EstadoEstudio: $('#EstadoEstudio').val(),
+            completitud: $('#completitud').val(),
+            PalabraClave: $('#PalabraClave').val()
+        };
+
+        window.location.href = '@Url.Action("BusquedaAlumnosExportar", "UTP")?' + $.param(data, true);
+    };
+
+    var OfertasExportar = function () {
+        console.log('OfertasExportar');
+
+        var data = {
+            NombreComercial: $('#NombreComercial').val(),
+            IdTipoCargoutp: $('#IdTipoCargoutp').val(),
+            CargoOfrecido: $('#CargoOfrecido').val(),
+            IdSectorutp: $('#IdSectorutp').val(),
+            IdTipoContratoutp: $('#IdTipoContratoutp').val(),
+            AExperiencia: $('#AExperiencia').val(),
+            RemuneracionOfrecida: $('#RemuneracionOfrecida').val(),
+            IdTipoEstudioutp: $('#IdTipoEstudioutp').val(),
+            Conocimientos: $('#Conocimientos').val(),
+            NumeroPostulante: $('#NumeroPostulante').val(),
+            IdEstadoOferta: $('#IdEstadoOferta').val(),
+            InformacionAdicional: $('#TipoConocimientoIdListaValor').val(),
+            Carrera: $('#Carrera').val(),
+            TipoTrabajoUTP: $('#TipoTrabajoUTP').val(),
+            PalabraClave: $('#PalabraClave').val()
+        };
+
+        window.location.href = '@Url.Action("BusquedaOfertasExportar", "UTP")?' + $.param(data, true);
+    };
 
     function CargarPOSTNull(id, link) {
         $.ajax({
@@ -231,6 +250,7 @@
 
         })
     }
+
     function CargarPOST(id, link, entidad) {
         $.ajax({
             url: link,
@@ -273,7 +293,6 @@
 
 
     function AutoComplete(inputsearch, urlsearch, inputtext, inputid) {
-        alert(1);
         $(inputsearch).autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -308,12 +327,8 @@
             }
         });
     }
+
     function AutoCompleteText(inputsearch, urlsearch, inputtext) {
-
-        console.log(inputsearch);
-        console.log(urlsearch);
-        console.log(inputtext);
-
         $(inputsearch).autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -344,6 +359,7 @@
             }
         });
     }
+
     function AutoCompleteTextVarios(inputsearch, urlsearch, inputtext, tipo) {
         $(inputsearch).autocomplete({
             source: function (request, response) {
@@ -356,8 +372,6 @@
                     dataFilter: function (data) { return data; },
                     success: function (data) {
                         response($.map(data, function (item) {
-                            //console.log(data);
-
                             return {
                                 value: item.Label,
                                 id: item.Value
@@ -381,14 +395,6 @@
 
 
     function AutoCompleteTextDemo(inputsearch, urlsearch, inputtext, combo) {
-
-        console.log(inputsearch);
-        console.log(urlsearch);
-        console.log(combo);
-
-        //var codigoTipoConocimiento = $('#TipoConocimientoIdListaValor').val();
-
-
         $(inputsearch).autocomplete({
             source: function (request, response) {
                 console.log(request);
@@ -434,8 +440,6 @@
                     dataFilter: function (data) { return data; },
                     success: function (data) {
                         response($.map(data, function (item) {
-                            //console.log(data);
-
                             return {
                                 value: item.Label,
                                 id: item.Value

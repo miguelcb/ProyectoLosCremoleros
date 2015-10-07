@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="~/img/IDAT/favicon.ico">
     <title>Portal de Empleabilidad: Alumno - @ViewBag.Title</title>
     @*@Styles.Render("/Content/themes/base/css","~/Content/css")
     @Scripts.Render("~/bundles/modernizr")  
@@ -49,7 +50,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:rgb(240, 240, 240);border:0px;">
         <div class="container">
 
-            <a href="@Url.Action("Index", "Alumno")"><img src="~/img/LogoUTPPE2.png" class="LogoUTPPE2" /></a>
+            <a href="@Url.Action("Index", "Alumno")"><img src="~/img/IDAT/logo.png" class="LogoUTPPE2" /></a>
             <div class="navbar-header posicion-menu">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="margin: 3px 5px 3px 0px">
                     <span class="icon-bar"></span>
@@ -58,55 +59,32 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse" style="border:0px;background-color:transparent;">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" style="margin-top: 11px;">
                     <li>
-                        @Html.ActionLink("Mi Portal", "Index", "Alumno", null, new { @class = "btn btn-default navbar-btn Boton_pestana color-paleta1", @style = "padding: 2px 0px 2px 0px; color: white;" })
+                        @Html.ActionLink("Mi Portal", "Index", "Alumno", null, new { @id = "PestañaIndex", @class = "btn btn-default navbar-btn Boton_pestana color-paleta1", @style = "padding: 2px 0px 2px 0px; color: white; background-color: #669999;" })
                     </li>
                     <li>
-                        @Html.ActionLink("Postulaciones", "Postulacion", "Alumno", null, new { @class = "btn btn-default navbar-btn Boton_pestana color-paleta3", @style = "padding: 2px 0px 2px 0px; color: white;" })
+                        @Html.ActionLink("Postulaciones", "Postulacion", "Alumno", null, new { @id = "PestañaPostulacion", @class = "btn btn-default navbar-btn Boton_pestana color-paleta3", @style = "padding: 2px 0px 2px 0px; color: white; background-color: #669999;" })
                     </li>
                     <li>
-                        @Html.ActionLink("Ofertas", "BusquedaOferta", "Alumno", null, new { @class = "btn btn-default navbar-btn Boton_pestana color-paleta2", @style = "padding: 2px 0px 2px 0px; color: white;" })
+                        @Html.ActionLink("Ofertas", "BusquedaOferta", "Alumno", null, new { @id = "PestañaOfertas", @class = "btn btn-default navbar-btn Boton_pestana color-paleta2", @style = "padding: 2px 0px 2px 0px; color: white; background-color: #669999;" })
                     </li>
-
-
                     <li>
-                        @Html.ActionLink("Mi CV", "MiCV", "Alumno", new { id = 0 }, new { id = 0, @class = "btn btn-default navbar-btn Boton_pestana color-paleta4", @style = "padding: 2px 0px 2px 0px; color: white;" })
-                   
-                   
-                    
+                        @Html.ActionLink("Mi CV", "MiCV", "Alumno", new { id = 0 }, new { id = 0, @class = "btn btn-default navbar-btn Boton_pestana color-paleta4", @style = "padding: 2px 0px 2px 0px; color: white; background-color: #669999;" })
                      </li>
                     <li>
                         @*<a class="btn btn-default navbar-btn Boton_pestana color-paleta5" href="..\Alumno\Index" style="padding: 2px 0px 2px 0px; color: white;">Eventos</a>*@
-                        @Html.ActionLink("Eventos", "Eventos", "Alumno", null, new { @class = "btn btn-default navbar-btn Boton_pestana color-paleta5", @style = "padding: 2px 0px 2px 0px; color: white;" })
+                        @Html.ActionLink("Eventos", "Eventos", "Alumno", null, new { @id = "PestañaEventos", @class = "btn btn-default navbar-btn Boton_pestana color-paleta5", @style = "padding: 2px 0px 2px 0px; color: white; background-color: #669999;" })
+                    </li>
+                    <li>
+                        @*<a class="btn btn-default navbar-btn Boton_pestana color-paleta5" href="..\Alumno\Index" style="padding: 2px 0px 2px 0px; color: white;">Eventos</a>*@
+                        @Html.ActionLink("Convenios", "Convenios", "Alumno", null, new { @id = "PestañaConvenios", @class = "btn btn-default navbar-btn Boton_pestana color-paleta9", @style = "padding: 2px 0px 2px 0px; color: white; background-color: #669999;" })
                     </li>
 
                 </ul>
-                <ul class="nav navbar-nav navbar-right" style="padding-right: 15px; ">
-                    <li>
-                        <a href=@Url.Action("Index","Home") class="fui fa-2x menuOpcionesAd" style="padding: 2px 3px 0px 8px"><span class="color-icono-paleta2 ">%</span></a>
-                    </li>
-
-
-
-
-
-                    <li>
-                        @*<a href="..\Home\Contacto" class="fui fa-2x" style=" padding:2px 3px 0px 8px;"><span class="color-icono-paleta2">:</span></a>*@
-                        <a href=@Url.Action("Contacto", "Home", new { pantalla = UTP.PortalEmpleabilidad.Modelo.Constantes.MENSAJES_ALUMNO_CONTACTO }) class="fui fa-2x menuOpcionesAd" style="padding:2px 3px 0px 8px;"><span class="color-icono-paleta2">:</span></a>
-                        
-                    </li>
-                    <li>
-                        <a href="https://es-es.facebook.com/UTPEmpleabilidad" target="_blank" class="fui fa-2x menuOpcionesAd" style=" padding:2px 3px 0px 8px;"><span class="color-icono-facebook">)</span></a>
-                    </li>
-                    <li>
-                        <a href=@Url.Action("Logout", "Alumno") class="fui fa-2x menuOpcionesAd" style=" padding:2px 10px 0px 10px;"><span class="color-icono-paleta2">*</span></a>
-
-                    </li>
-                </ul>
-
+                @Html.Partial("MenuIntraAlumno")
             </div>
-            <div id="divFinalCabecera" class="final-cabecera color-paleta1"></div>
+            <div id="divFinalCabecera" class="final-cabecera" style="background-color:#FF0000"></div>
         </div>
     </div>
     <!--<div class="container body-content">-->
@@ -115,30 +93,10 @@
 
         <footer>
             <!-- start of #footer section -->
-            <style>
-                footer {
-                    height: auto;
-                    overflow: auto;
-                }
-
-                    footer .row:last-child {
-                        padding-top: 0;
-                    }
-            </style>
             <div class="container">
                 <div class="row">
-                    <div id="footer_left" class="span4">
-                    </div>
-                    <div id="footer_center" class="span4">
-                        &nbsp;
-                    </div>
-                </div>
-                <div class="row">
                     <div class="span7" style="padding-left:5px;">
-                        <div>Dirección de Empleabilidad | Email: <a href="mailto:empleabilidad@utp.edu.pe">empleabilidad@utp.edu.pe</a> | </div>
-                        <div>Teléfono: (+51) 315-9600 Anexo 1438 | Web: <a href="http://empleabilidad.utp.edu.pe/" target="_blank">empleabilidad.utp.edu.pe</a></div>
-                        <div>Mesa de Ayuda | Email: <a href="mailto:mesadeayuda@utp.edu.pe">mesadeayuda@utp.edu.pe</a> | Teléfono: (+51) 315-9606 | Web: <a href="http://mesadeayuda.utp.edu.pe/" target="_blank">mesadeayuda.utp.edu.pe</a></div>
-                        <div>Universidad Tecnológica del Perú | <a href="@Url.Action("PoliticasDePrivacidad", "Home")" target="_blank">Política de Privacidad</a> | <a href="@Url.Action("TerminosDeUso", "Home")" target="_blank">Términos y Condiciones</a> | <a href="@Url.Action("FAQ", "Home")" target="_blank">FAQ</a></div>
+                        @Html.Partial("FooterIntra")
                         &nbsp;
                     </div>
 

@@ -102,7 +102,25 @@ namespace UTP.PortalEmpleabilidad.Logica
             return adGeneral.Home_ListarDistritos(IDListaValorPadre);
         }
 
+        public List<ReporteEquivalente> ObtenerReporteEquivalente()
+        {
+            List<ReporteEquivalente> lista = new List<ReporteEquivalente>();
 
+            DataTable dtResultado = adGeneral.ObtenerReporteEquivalente();
+
+            foreach (DataRow fila in dtResultado.Rows)
+            {
+                ReporteEquivalente item = new ReporteEquivalente();
+                item.DatoOrigen = Convert.ToString(fila["DatoOrigen"]);
+                item.DatoEquivalente = Convert.ToString(fila["DatoEquivalente"]);
+                item.Orden = Convert.ToString(fila["Orden"]);               
+
+                lista.Add(item);
+            }
+
+            return lista;
+        
+        }
         public List<ListaValor> ObtenerListaValor(int idLista)
         {
             List<ListaValor> lista = new List<ListaValor>();
@@ -283,8 +301,8 @@ namespace UTP.PortalEmpleabilidad.Logica
                 item.ValorUTP = Convert.ToString(fila["ValorUTP"]); ;
                 item.EstadoValor = Convert.ToString(fila["EstadoValor"]); ;
 
-                //EDEEST = estudiante, EDEEGR = egresado, EDEBAC = Bachiller, EDETIT = Titulado.
-                if (item.IdListaValor == "EDEEST" || item.IdListaValor == "EDEEGR" || item.IdListaValor == "EDEBAC" || item.IdListaValor == "EDETIT")
+                //EDEEST = estudiante, EDEEGR = egresado, EDETIT = Titulado.
+                if (item.IdListaValor == "EDEEST" || item.IdListaValor == "EDEEGR" || item.IdListaValor == "EDETIT")
                 { 
                     lista.Add(item);
                 }
@@ -314,7 +332,7 @@ namespace UTP.PortalEmpleabilidad.Logica
 
                 //TEDOCT = Doctorado, TEESCO = Escolar, TEPOST = Post-Grado, TETECN = Técnico, TEUNIV = Grado Universitario
                 //Sólo se agregan los tipos de estudio que son distintos a Escolar y Universitario.
-                if (item.IdListaValor != "TEESCO" && item.IdListaValor != "TEUNIV")
+                if (item.IdListaValor != "TEESCO" && item.IdListaValor != Constantes.TIPO_ESTUDIO_PRINCIPAL)
                 {
                     lista.Add(item);
                 }
@@ -344,7 +362,7 @@ namespace UTP.PortalEmpleabilidad.Logica
                 "Le recordamos que tiene una Oferta Laboral pendiente por cerrar.</br>" +
                 "Por favor, ingrese a la Oferta Laboral en el Portal y en la sección Administración de la Oferta haga clic en el botón 'Cerrar Oferta'.</br></br>" +
                 "Muchas gracias,</br>" +
-                "La Dirección de Empleabilidad";
+                "Área de Empleabilidad";
                 mensaje.Asunto = nombreOferta + " - Cierre de Oferta";
 
                 mensaje.IdOfertaMensaje = idOferta;

@@ -23,20 +23,15 @@ namespace UTPPrototipo.Controllers
     public class HomeController : Controller
     {
         LNContenido ln = new LNContenido();
+
         public ActionResult Index()
         {            
-            ViewBag.ListaIndex = ln.Contenido_BuscarNoticiasEventosOtros("1");
-
-            ViewBag.ListaNoticias = ln.Contenido_BuscarIndex("4");
-            ViewBag.ListaEventos = ln.Contenido_BuscarIndex("7");
-            ViewBag.ListaTestimonios = ln.Contenido_BuscarIndex("5");
+            ViewBag.ListaIndex = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_NOTICIAS_EVENTOS);
+            ViewBag.ListaNoticias = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_NOTICIAS);
+            ViewBag.ListaEventos = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_SE_VIENE);
+            ViewBag.ListaTestimonios = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_NOS_CUENTAN);
 
             return View();
-
-            //List<Contenido> contenido = new List<Contenido>();
-            //string x = "1";
-            //contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
-            //return View(contenido);
         }
 
         public FileResult Imagen_Index(int id)
@@ -45,8 +40,7 @@ namespace UTPPrototipo.Controllers
 
 
             List<Contenido> contenido = new List<Contenido>();
-            string x = "1";
-            contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
+            contenido = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_NOTICIAS_EVENTOS);
 
             Contenido producto = contenido.Where(k => k.IdContenido == id).FirstOrDefault();
 
@@ -73,10 +67,8 @@ namespace UTPPrototipo.Controllers
         public ActionResult ParaEmpleadores()
         {
             List<Contenido> contenido = new List<Contenido>();
-            string x = "6";
-            contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
+            contenido = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_EMPLEADORES);
 
-            //return View(contenido);
 
             List<ContenidoVista> contentModel = contenido.Select(item => new ContenidoVista()
             {
@@ -89,6 +81,7 @@ namespace UTPPrototipo.Controllers
                 Pestana = item.Pestana,
 
             }).ToList();
+
             return View(contentModel);
         }
 
@@ -97,8 +90,7 @@ namespace UTPPrototipo.Controllers
             const string alternativePicturePath = @"/Content/Images/question_mark.jpg";
 
             List<Contenido> contenido = new List<Contenido>();
-            string x = "6";
-            contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
+            contenido = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_EMPLEADORES);
 
             Contenido producto = contenido.Where(k => k.IdContenido == id).FirstOrDefault();
 
@@ -126,6 +118,8 @@ namespace UTPPrototipo.Controllers
         {
             Mensaje mensaje = new Mensaje();
             mensaje.Pantalla = pantalla;
+            mensaje.DeUsuario = Constantes.NOMBRE_UTP;
+            mensaje.DeUsuarioCorreoElectronico = Constantes.CORREO_PRINCIPAL;
 
             if (pantalla == Constantes.MENSAJES_EMPRESA_CONTACTO)
             {
@@ -135,15 +129,15 @@ namespace UTPPrototipo.Controllers
                 mensaje.DeUsuarioCorreoElectronico = ticketEmpresa.CorreoElectronico;
                 mensaje.DeUsuarioNombre = ticketEmpresa.Nombre;
             }
-            else
-                if (pantalla == Constantes.MENSAJES_ALUMNO_CONTACTO)
-                {
-                    TicketAlumno ticketAlumno = (TicketAlumno)Session["TicketAlumno"];
 
-                    mensaje.DeUsuario = ticketAlumno.Usuario;
-                    mensaje.DeUsuarioCorreoElectronico = ticketAlumno.CorreoElectronico;
-                    mensaje.DeUsuarioNombre = ticketAlumno.Nombre;
-                }
+            if (pantalla == Constantes.MENSAJES_ALUMNO_CONTACTO)
+            {
+                TicketAlumno ticketAlumno = (TicketAlumno)Session["TicketAlumno"];
+
+                mensaje.DeUsuario = ticketAlumno.Usuario;
+                mensaje.DeUsuarioCorreoElectronico = ticketAlumno.CorreoElectronico;
+                mensaje.DeUsuarioNombre = ticketAlumno.Nombre;
+            }
 
             ViewBag.Pantalla = pantalla;
 
@@ -205,35 +199,24 @@ namespace UTPPrototipo.Controllers
 
         public ActionResult Testimonios()
         {
-            List<Contenido> contenido = new List<Contenido>();
-            string x = "5";
-            contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
+            ViewBag.Testimonios = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_TESTIMONIOS);
+            ViewBag.Opiniones = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_EMPRESAS_OPINAN);
+            ViewBag.Casos = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_EXITO_IMPARABLE);
 
-
-            List<ContenidoVista> contentModel = contenido.Select(item => new ContenidoVista()
-            {
-                Menu = item.Menu,
-                Titulo = item.Titulo,
-                SubTitulo = item.SubTitulo,
-                Descripcion = item.Descripcion,
-                Imagen = item.Imagen,
-                IdContenido = item.IdContenido
-
-            }).ToList();
-            return View(contentModel);
-
-       
-
+            return View();
         }
 
+        public ActionResult Convenios()
+        {
+            return View();
+        
+        }
         public FileResult Imagen_Testimonios(int id)
         {
             const string alternativePicturePath = @"/Content/Images/question_mark.jpg";
 
             List<Contenido> contenido = new List<Contenido>();
-            string x = "5";
-            //contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
-            contenido = ln.Contenido_BuscarIndex(x);
+            contenido = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_TESTIMONIOS);
 
             Contenido producto = contenido.Where(k => k.IdContenido == id).FirstOrDefault();
 
@@ -260,7 +243,6 @@ namespace UTPPrototipo.Controllers
 
         public ActionResult DirEmp()
         {
-   //////
             List<Contenido> contenido = new List<Contenido>();
             string x = "2";
             contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
@@ -275,18 +257,14 @@ namespace UTPPrototipo.Controllers
                 IdContenido =item .IdContenido 
 
             }).ToList();
+
             return View(contentModel);
-                       
         }
 
         public FileResult Imagen_Diremp(int id)
         {
-            //const string alternativePicturePath = @"/img/sinimagen.jpg";
-            //const string alternativePicturePath = @"/Content/Images/question_mark.jpg";
-
             List<Contenido> contenido = new List<Contenido>();
-            string x = "2";
-            contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
+            contenido = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_AREA_EMPLEABILIDAD);
 
             Contenido producto = contenido.Where(k => k.IdContenido == id).FirstOrDefault();
 
@@ -301,7 +279,6 @@ namespace UTPPrototipo.Controllers
             {
                 stream = new MemoryStream();
 
-                //var path = Server.MapPath(alternativePicturePath);
                 var path = System.Web.HttpContext.Current.Server.MapPath(@"~/img/sinimagen.jpg");
                 var image = new System.Drawing.Bitmap(path);
 
@@ -315,28 +292,19 @@ namespace UTPPrototipo.Controllers
 
         public ActionResult NoticiasEventos()
         {
-            ViewBag.Noticias = ln.Contenido_BuscarNoticiasEventosOtros("4");
-            ViewBag.Eventos = ln.Contenido_BuscarNoticiasEventosOtros("7");
-
+            ViewBag.Noticias = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_NOTICIAS);
+            ViewBag.Eventos = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_EVENTOS);
 
             return View();
-
-
-            //List<Contenido> contenido = new List<Contenido>();
-            //string x = "4";
-            //contenido = ln.Contenido_Buscar(x);
-
-            //return View(contenido);
-                    
         }
+        
         public FileResult Imagen_Noticia(int id)
         {
             const string alternativePicturePath = @"/Content/Images/question_mark.jpg";
 
             List<Contenido> Noticia = new List<Contenido>();
-            string x = "4";
-            //Noticia = ln.Contenido_BuscarNoticiasEventosOtros(x);
-            Noticia = ln.Contenido_BuscarIndex(x);
+            Noticia = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_NOTICIAS);
+
             Contenido producto = Noticia.Where(k => k.IdContenido == id).FirstOrDefault();
 
             MemoryStream stream;
@@ -364,9 +332,8 @@ namespace UTPPrototipo.Controllers
             const string alternativePicturePath = @"/Content/Images/question_mark.jpg";
 
             List<Contenido> Evento = new List<Contenido>();
-            string x = "7";
-            //Evento = ln.Contenido_BuscarNoticiasEventosOtros(x);
-            Evento = ln.Contenido_BuscarIndex(x);
+            Evento = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_EVENTOS);
+
             Contenido producto = Evento .Where(k => k.IdContenido == id).FirstOrDefault();
 
             MemoryStream stream;
@@ -388,13 +355,11 @@ namespace UTPPrototipo.Controllers
 
             return new FileStreamResult(stream, "image/jpeg");
         } 
+
         public ActionResult Servicios()
         {
             List<Contenido> contenido = new List<Contenido>();
-            string x = "3";
-            contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
-
-            //return View(contenido);
+            contenido = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_SERVICIOS);
 
             List<ContenidoVista> contentModel = contenido.Select(item => new ContenidoVista()
             {
@@ -406,8 +371,8 @@ namespace UTPPrototipo.Controllers
                 IdContenido = item.IdContenido
 
             }).ToList();
+
             return View(contentModel);
-       
         }
 
         public FileResult Imagen_Servicios(int id)
@@ -415,8 +380,7 @@ namespace UTPPrototipo.Controllers
             const string alternativePicturePath = @"/Content/Images/question_mark.jpg";
 
             List<Contenido> contenido = new List<Contenido>();
-            string x = "3";
-            contenido = ln.Contenido_BuscarNoticiasEventosOtros(x);
+            contenido = ln.Contenido_BuscarNoticiasEventosOtros(Constantes.CONTENIDO_SERVICIOS);
 
             Contenido producto = contenido.Where(k => k.IdContenido == id).FirstOrDefault();
 
@@ -438,43 +402,166 @@ namespace UTPPrototipo.Controllers
             }
 
             return new FileStreamResult(stream, "image/jpeg");
-        } 
+        }
+
         public ActionResult TerminosDeUso()
         {
             return View();
         }
+
         public ActionResult PoliticasDePrivacidad()
         {
             return View();
         }
+
         public ActionResult FAQ()
         {
             return View();
         }
 
-        
-        //public JsonResult GetCityDistrito(string idDepartamento, string idProvincia)
-        //{
-        //    LNGeneral lnGeneral = new LNGeneral();
-        //    DataTable dtDistritos = lnGeneral.ObtenerListaValor2(Constantes.IDLISTA_Departamento, Constantes.IDLISTA_Provincia);
-           
+        public ActionResult Conocenos()
+        {
+            ViewBag.Contenido = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_AREA_EMPLEABILIDAD)[0];
+            ViewBag.Staff = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_STAFF);
 
-        //    List<SelectListItem> li = new List<SelectListItem>();
+            return View();
+        }
 
-        //    for (int i = 0; i <= dtDistritos.Rows.Count - 1; i++)
-        //    {
-        //        string nombre = dtDistritos.Rows[i]["Distrito"].ToString();
-        //        string valor = dtDistritos.Rows[i]["CodigoDistrito"].ToString();
+        public ActionResult Alumno()
+        {
+            ViewBag.Slides = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_ALUMNOS);
 
-        //        SelectListItem item = new SelectListItem() { Text = nombre, Value = valor };
+            return View();
+        }
 
-        //        li.Add(item);
+        public ActionResult NotiEmpleos()
+        {
+            ViewBag.Contenidos = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_NOTICIAS);
 
-        //    }
+            return View();
+        }
 
-        //    return Json(new SelectList(li, "Value", "Text"));
-        //}
+        public ActionResult LoQueSeViene()
+        {
+            ViewBag.Contenidos = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_SE_VIENE);
 
+            return View();
+        }
+
+        public ActionResult LasEmpresasOpinan()
+        {
+            ViewBag.Contenidos = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_EMPRESAS_OPINAN);
+
+            return View();
+        }
+
+        public ActionResult CasosDeExitoImparable()
+        {
+            ViewBag.Contenidos = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_EXITO_IMPARABLE);
+
+            return View();
+        }
+
+        public ActionResult QueNosCuentan()
+        {
+            ViewBag.Contenidos = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_NOS_CUENTAN);
+
+            return View();
+        }
+
+        public FileResult Imagen(int id, string source)
+        {
+            List<Contenido> contenido = new List<Contenido>();
+            contenido = ln.Contenido_BuscarNoticiasEventosOtros(source);
+
+            Contenido producto = contenido.Where(k => k.IdContenido == id).FirstOrDefault();
+
+            MemoryStream stream;
+
+            if (producto != null && producto.Imagen != null)
+            {
+                stream = new MemoryStream(producto.Imagen);
+            }
+            else
+            {
+                stream = new MemoryStream();
+
+                var path = System.Web.HttpContext.Current.Server.MapPath(@"~/img/sinimagen.jpg");
+                var image = new System.Drawing.Bitmap(path);
+
+                image.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                stream.Seek(0, SeekOrigin.Begin);
+            }
+
+            return new FileStreamResult(stream, "image/jpeg");
+        }
+
+        public FileResult Imagen_Staff(int id)
+        {
+            const string alternativePicturePath = @"/Content/Images/question_mark.jpg";
+
+            List<Contenido> Noticia = new List<Contenido>();
+            Noticia = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_STAFF);
+
+            Contenido producto = Noticia.Where(k => k.IdContenido == id).FirstOrDefault();
+
+            MemoryStream stream;
+
+            if (producto != null && producto.Imagen != null)
+            {
+                stream = new MemoryStream(producto.Imagen);
+            }
+            else
+            {
+                stream = new MemoryStream();
+
+                var path = Server.MapPath(alternativePicturePath);
+                var image = new System.Drawing.Bitmap(path);
+
+                image.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                stream.Seek(0, SeekOrigin.Begin);
+            }
+
+            return new FileStreamResult(stream, "image/jpeg");
+        }
+
+        public FileResult Imagen_Imparable(int id)
+        {
+            const string alternativePicturePath = @"/Content/Images/question_mark.jpg";
+
+            List<Contenido> Noticia = new List<Contenido>();
+            Noticia = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_ALUMNOS);
+
+            Contenido producto = Noticia.Where(k => k.IdContenido == id).FirstOrDefault();
+
+            MemoryStream stream;
+
+            if (producto != null && producto.Imagen != null)
+            {
+                stream = new MemoryStream(producto.Imagen);
+            }
+            else
+            {
+                stream = new MemoryStream();
+
+                var path = Server.MapPath(alternativePicturePath);
+                var image = new System.Drawing.Bitmap(path);
+
+                image.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                stream.Seek(0, SeekOrigin.Begin);
+            }
+
+            return new FileStreamResult(stream, "image/jpeg");
+        }
+
+        public ActionResult Empresa()
+        {
+            ViewBag.Tabs = ln.Contenido_BuscarIndex(Constantes.CONTENIDO_EMPRESAS);
+
+            var tabs = (List<Contenido>)(ViewBag.Tabs);
+
+            return View();
+        }
 
         public JsonResult GetStateProvincia(string IDListaValorPadre)
         {
@@ -488,6 +575,7 @@ namespace UTPPrototipo.Controllers
                 SelectListItem item = new SelectListItem() { Text = nombre, Value = valor };
                 li.Add(item);
             }
+
             return Json(new SelectList(li, "Value", "Text"));
         }
 
@@ -504,24 +592,13 @@ namespace UTPPrototipo.Controllers
             ViewBag.TipoDocumentoIdListaValor = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_TIPO_DOCUMENTO), "IdListaValor", "Valor");
             ViewBag.RolIdListaValor = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_ROL_USUARIO), "IdListaValor", "Valor");
             ViewBag.EstadoUsuarioIdListaValor = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_ESTADO_USUARIO), "IdListaValor", "Valor");
-            //ViewBag.DireccionDepartamentoLocacion = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_Departamento), "IdListaValor", "Valor");
-
-            DataTable dtDepartamento = lnGeneral.Home_Departamento(Constantes.IDLISTA_Departamento);
-            List<SelectListItem> li = new List<SelectListItem>();
-            for (int i = 0; i <= dtDepartamento.Rows.Count - 1; i++)
-            {
-                string nombre = dtDepartamento.Rows[i]["Valor"].ToString();
-                string valor = dtDepartamento.Rows[i]["IdListaValor"].ToString();
-                SelectListItem item = new SelectListItem() { Text = nombre, Value = valor };
-        
-                li.Add(item);
-            }
-            ViewData["Departamento"] = li;
-
-
+            ViewBag.DireccionDepartamentoLocacion = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_Departamento), "IdListaValor", "Valor");
+            ViewBag.DireccionCiudadLocacion = new SelectList(String.Empty, "IdListaValor", "Valor");
+            ViewBag.DireccionDistritoLocacion = new SelectList(String.Empty, "IdListaValor", "Valor");
 
             return View();
         }
+
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Registro(VistaRegistroEmpresa empresa)
         {
@@ -565,7 +642,6 @@ namespace UTPPrototipo.Controllers
 
                 //validar si el pais es peru, si es asi entonces:
                 
-                
                 //Usuario
                 empresa.RolIdListaValor = "ROLEAD"; //La cuenta es creada como Rol: "Administrador de Empresa"
                 empresa.EstadoUsuarioIdListaValor = "USEUTP"; //El usuario también se encuenta pendiente de activación. Se debe activar al momento que UTP active la cuenta.
@@ -604,17 +680,19 @@ namespace UTPPrototipo.Controllers
                 //Variable temporal para poner el break
                 int a = 0;
             }
+
             LNGeneral lnGeneral = new LNGeneral();
+
             ViewBag.PaisIdListaValor = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_PAIS), "IdListaValor", "Valor", empresa.PaisIdListaValor);
             ViewBag.SectorEmpresarial1IdListaValor = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_SECTOR_EMPRESARIAL), "IdListaValor", "Valor", empresa.SectorEmpresarial1IdListaValor);            
             ViewBag.TipoLocacionIdListaValor = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_TIPO_LOCACION), "IdListaValor", "Valor", empresa.TipoLocacionIdListaValor);
             ViewBag.TipoDocumentoIdListaValor = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_TIPO_DOCUMENTO), "IdListaValor", "Valor", empresa.TipoDocumentoIdListaValor);            
-
-
             ViewBag.DireccionDepartamentoLocacion = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_Departamento), "IdListaValor", "Valor", empresa.DireccionDepartamentoLocacion);
-
+            ViewBag.DireccionCiudadLocacion = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_Provincia).Where(p => p.IdListaValorPadre == empresa.DireccionDepartamentoLocacion), "IdListaValor", "Valor", empresa.DireccionCiudadLocacion);
+            ViewBag.DireccionDistritoLocacion = new SelectList(lnGeneral.ObtenerListaValor(Constantes.IDLISTA_DISTRITO_PERU).Where(d => d.IdListaValorPadre == empresa.DireccionCiudadLocacion), "IdListaValor", "Valor", empresa.DireccionDistritoLocacion);
 
             ViewBag.MensajeDeError = mensajeDeError;
+
             return View(empresa);
         }
 

@@ -11,11 +11,12 @@
 
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="CabeceraColapsaBusqueda" style="padding: 2px 2px 2px 6px;">
-            <h5 class="panel-title">
-                <a data-toggle="collapse" data-parent="#CriterioBusquedaAlumno" href="#ColapsaBusqueda" aria-expanded="true" aria-controls="ColapsaBusqueda" class="fuente-seccion">
-                    Búsqueda
-                </a>
-            </h5>
+            <div class="panel-title">
+                <div data-toggle="collapse" data-parent="#CriterioBusquedaAlumno" data-target="#ColapsaBusqueda" aria-expanded="true" aria-controls="ColapsaBusqueda" class="fuente-seccion">
+                    <span role="button">Búsqueda</span>
+                    <span class="glyphicon pull-right" role="button"></span>
+                </div>
+            </div>
         </div>
         <div id="ColapsaBusqueda" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="CabeceraColapsaBusqueda">
             <div class="panel-body">
@@ -42,11 +43,12 @@
     @*}*@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="CabeceraColapsaBusquedaAvanzada" style="padding: 2px 2px 2px 6px;">
-            <h5 class="panel-title">
-                <a class="collapsed fuente-seccion" data-toggle="collapse" data-parent="#CriterioBusquedaAlumno" href="#ColapsaBusquedaAvanzada" aria-expanded="false" aria-controls="ColapsaBusquedaAvanzada">
-                    Búsqueda avanzada
-                </a>
-            </h5>
+            <div class="panel-title">
+                <div class="collapsed fuente-seccion" data-toggle="collapse" data-parent="#CriterioBusquedaAlumno" data-target="#ColapsaBusquedaAvanzada" aria-expanded="false" aria-controls="ColapsaBusquedaAvanzada">
+                    <span role="button">Búsqueda avanzada</span>
+                    <span class="glyphicon pull-right" role="button"></span>
+                </div>
+            </div>
         </div>
         <div id="ColapsaBusquedaAvanzada" class="panel-collapse collapse" role="tabpanel" aria-labelledby="CabeceraColapsaBusquedaAvanzada">
             <div class="panel-body">
@@ -127,6 +129,7 @@
 <script>
     $(document).ready(function () {
         $("#divFinalCabeceraEmpresa").removeClass("color-paleta1 color-paleta2 color-paleta4 color-paleta5").addClass("color-paleta3");
+        $('#PestañaHunting').css('backgroundColor', '#f00');
         AutoCompleteText('#Estudios', '@Url.Action("ListarEstudio", "Empresa")', '#Estudios', 'option', 'appendTo', '.eventInsForm');
         @*AutoCompleteText('#NombreCargo', '@Url.Action("ListarCargo", "Empresa")', '#NombreCargo');*@
         AutoCompleteText('#Distrito', '@Url.Action("ListarDistritos", "Empresa")', '#Distrito');

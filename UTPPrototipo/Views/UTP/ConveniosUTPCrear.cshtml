@@ -1,0 +1,455 @@
+﻿@model UTP.PortalEmpleabilidad.Modelo.Convenio
+@{
+    Layout = "~/Views/UTP/_LayoutUTP.cshtml";
+    ViewBag.Title = "Empresas";
+}
+<div class="container" style="margin-top:2px;">
+    <div class="panel-group" id="datos-convenio" role="tablist" aria-multiselectable="true">
+        @{Html.RenderAction("VistaCabeceraUtp", "UTP");}
+    </div>
+    <h5>Convenio</h5>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.IdAlumno)
+        @Html.HiddenFor(m => m.IdEmpresa)
+        <script src="~/Scripts/moment.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.js"></script>
+        <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <input type="hidden" id="IdAlumno">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default" style="text-align: left;">
+                    <div class="panel-heading" style="padding: 2px 2px 2px 6px;" role="tab" id="heading1">
+                        <div class="panel-title">
+                            <a class="fuente-seccion" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                <h6>Sobre el Alumno</h6>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse in" role="tab" aria-labelledby="heading1">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Nombre<br />y Apellidos</span>
+                                        @Html.TextBoxFor(m => m.Alumno, htmlAttributes: new { @class = "form-control", @style = "height:34px", @placeholder = "Ingrese nombre o apellido", @id = "Alumno" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Alumno, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Código</span>
+                                        @Html.TextBoxFor(m => m.CodAlumnoUtp, htmlAttributes: new { @class = "form-control", @id = "CodAlumnoUtp" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.CodAlumnoUtp, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Carrera</span>
+                                        @Html.TextBoxFor(m => m.Carrera, htmlAttributes: new { @class = "form-control", @placeholder = "Carrera" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Carrera, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Ciclo</span>
+                                        @Html.TextBoxFor(m => m.Ciclo, htmlAttributes: new { @class = "form-control", @placeholder = "Ciclo" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Ciclo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Email</span>
+                                        @Html.TextBoxFor(m => m.CorreoAlumno, htmlAttributes: new { @class = "form-control", @placeholder = "Correo Electrónico" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.CorreoAlumno, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Teléfono</span>
+                                        @Html.TextBoxFor(m => m.TelefonoCelular, htmlAttributes: new { @class = "form-control", @placeholder = "Teléfono Celular" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.TelefonoCelular, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="panel panel-default" style="text-align:left;">
+                    <div class="panel-heading" style="padding: 2px 2px 2px 6px;" role="tab" id="heading2">
+                        <div class="panel-title">
+                            <a class="fuente-seccion" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                <h6>Sobre la Empresa</h6>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse in" role="tab" aria-labelledby="heading2">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Empresa</span>
+                                        @Html.TextBoxFor(m => m.NombreComercial, htmlAttributes: new { @class = "form-control", @style = "height:34px", @placeholder = "Empresa", @id = "NombreComercial" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.NombreComercial, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)RUC</span>
+                                        @Html.TextBoxFor(m => m.IdentificadorTributario, htmlAttributes: new { @class = "form-control", @placeholder = "RUC", @id = "IdentificadorTributario" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.IdentificadorTributario, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Clasificación</span>
+                                        @Html.DropDownListFor(m => m.Clasificacion, null, "- Seleccionar -", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Clasificacion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-12">
+                <div class="panel panel-default" style="text-align:left;">
+                    <div class="panel-heading" style="padding: 2px 2px 2px 6px;" role="tab" id="heading3">
+                        <div class="panel-title">
+                            <a class="fuente-seccion" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                <h6>Sobre la Práctica</h6>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse in" role="tab" aria-labelledby="heading3">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Inicio</span>
+                                        @Html.TextBoxFor(model => model.FechaInicio, new { @class = "form-control" })
+                                    </div>@Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Fin</span>
+                                        @Html.TextBoxFor(m => m.FechaFin, htmlAttributes: new { @class = "form-control" })
+                                    </div>@Html.ValidationMessageFor(m => m.FechaFin, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Duración</span>
+                                        <input class="form-control" id="PracticaDuracion" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Mes de<br /> Inicio</span>
+                                        <input class="form-control" id="MesInicio" readonly/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Salario</span>
+                                        @Html.TextBoxFor(m => m.SalarioOfrecido, htmlAttributes: new { @class = "form-control", @placeholder = "Salario", @id = "SalarioOfrecido" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.SalarioOfrecido, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Cargo</span>
+                                        @Html.TextBoxFor(m => m.CargoOfrecido, htmlAttributes: new { @class = "form-control", @placeholder = "Cargo" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.CargoOfrecido, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Área de<br />Desempeño</span>
+                                        @Html.TextBoxFor(m => m.AreaEmpresa, htmlAttributes: new { @class = "form-control", @placeholder = "Área de Desempeño" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.AreaEmpresa, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Fecha de<br />Registro</span>
+                                        @Html.TextBoxFor(model => model.FechaRegistro, new { @class = "form-control" })
+                                    </div>@Html.ValidationMessageFor(model => model.FechaRegistro, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Fuente</span>
+                                        @Html.DropDownListFor(m => m.FuenteConvenio, null, "- Seleccionar -", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.FuenteConvenio, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Estado</span>
+                                        @Html.DropDownListFor(m => m.EstadoConvenio, null, "- Seleccionar -", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.EstadoConvenio, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-sm-12">
+                <div class="panel panel-default" style="text-align:left;">
+                    <div class="panel-heading" style="padding: 2px 2px 2px 6px;" role="tab" id="heading4">
+                        <div class="panel-title">
+                            <a class="fuente-seccion" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                <h6>Sobre el Jefe</h6>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="collapse4" class="panel-collapse collapse in" role="tab" aria-labelledby="heading4">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Nombre<br />y Apellidos</span>
+                                        @Html.TextBoxFor(m => m.ContactoNombre, htmlAttributes: new { @class = "form-control", @placeholder = "Nombre y Apellidos" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.ContactoNombre, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Cargo</span>
+                                        @Html.TextBoxFor(m => m.ContactoCargo, htmlAttributes: new { @class = "form-control", @placeholder = "Cargo" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.ContactoCargo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)e-Mail</span>
+                                        @Html.TextBoxFor(m => m.ContactoCorreoElectronico, htmlAttributes: new { @class = "form-control", @placeholder = "e-Mail" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.ContactoCorreoElectronico, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">(*)Teléfono</span>
+                                        @Html.TextBoxFor(m => m.ContactoCelular, htmlAttributes: new { @class = "form-control", @placeholder = "Teléfono" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.ContactoCelular, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="panel panel-default" style="text-align:left;">
+                    <div class="panel-heading" style="padding: 2px 2px 2px 6px;" role="tab" id="heading5">
+                        <div class="panel-title">
+                            <a class="fuente-seccion" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                <h6>Seguimiento</h6>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="collapse5" class="panel-collapse collapse in" role="tab" aria-labelledby="heading5">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Envío de Evaluación<br />al Jefe</span>
+                                        @Html.TextBoxFor(m => m.EnvioEvaluacionJefe, htmlAttributes: new { @class = "form-control", @placeholder = "Envío de Evaluación al Jefe" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.EnvioEvaluacionJefe, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Recepción de<br />Evaluación<br />del Jefe</span>
+                                        @Html.TextBoxFor(m => m.RecepcionEvaluacionJefe, htmlAttributes: new { @class = "form-control", @placeholder = "Recepción de Evaluación del Jefe" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.RecepcionEvaluacionJefe, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Nota de<br />Evaluación<br />del Jefe</span>
+                                        @Html.TextBoxFor(m => m.NotaEvaluacionJefe, htmlAttributes: new { @class = "form-control", @placeholder = "Nota de Evaluación del Jefe" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.NotaEvaluacionJefe, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Envío de Formato de<br />Informe al Alumno</span>
+                                        @Html.TextBoxFor(m => m.EnvioFormatoInformeAlumno, htmlAttributes: new { @class = "form-control", @placeholder = "Envío de Formato de Informe al Alumno" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.EnvioFormatoInformeAlumno, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Recepción de<br />Informe del<br />Alumno</span>
+                                        @Html.TextBoxFor(m => m.RecepcionInformeAlumno, htmlAttributes: new { @class = "form-control", @placeholder = "Recepción de Informe del Alumno" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.RecepcionInformeAlumno, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Evaluador<br />del Alumno</span>
+                                        @Html.TextBoxFor(m => m.EvaluadorAlumno, htmlAttributes: new { @class = "form-control", @placeholder = "Evaluador del Alumno" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.EvaluadorAlumno, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Envío de Evaluación<br />a Evaluador</span>
+                                        @Html.TextBoxFor(m => m.EnvioEvaluacionEvaluador, htmlAttributes: new { @class = "form-control", @placeholder = "Envío de Evaluación a Evaluador" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.EnvioEvaluacionEvaluador, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Recepción de<br />Evaluación<br />del Evaluador</span>
+                                        @Html.TextBoxFor(m => m.RecepcionEvaluacionEvaluador, htmlAttributes: new { @class = "form-control", @placeholder = "Recepción de Evaluación del Evaluador" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.RecepcionEvaluacionEvaluador, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Nota de <br />Evaluación<br />del Evaluador</span>
+                                        @Html.TextBoxFor(m => m.NotaEvaluacionEvaluador, htmlAttributes: new { @class = "form-control", @placeholder = "Nota de Evaluación del Evaluador" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.NotaEvaluacionEvaluador, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="panel panel-default" style="text-align:left;">
+                    <div class="panel-heading" style="padding: 2px 2px 2px 6px;" role="tab" id="heading6">
+                        <div class="panel-title">
+                            <a class="fuente-seccion" data-toggle="collapse" data-parent="#accordion" href="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                                <h6>Observaciones</h6>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="collapse6" class="panel-collapse collapse in" role="tab" aria-labelledby="heading6">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Obser-<br />vación</span>
+                                        @Html.TextAreaFor(m => m.Observaciones, htmlAttributes: new { @class = "form-control", @Rows = "4", @placeholder = "Observaciones" })
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Observaciones, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row" style="text-align: right;">
+                <button class="btn btn-default color-paleta8">Guardar</button>
+            </div>
+        </div>
+    }
+</div>
+<script>
+
+    $(document).ready(function () {
+        $("#divFinalCabecera").removeClass("color-paleta1 color-paleta2 color-paleta3 color-paleta4 color-paleta5 color-paleta6 color-paleta7 color-paleta8").addClass("color-paleta9");
+
+        AutoCompleteTextVarios('#Alumno', '@Url.Action("ListarAlumnosNombreyCodigo", "UTP")', '#Alumno', 'A');
+        AutoCompleteTextVarios('#NombreComercial', '@Url.Action("ListarNombreEmpresa", "UTP")', '#NombreComercial', 'E');
+
+        var $eventStartDate = $("#FechaInicio"),
+            $eventEndDate = $("#FechaFin"),
+            $duration = $('#PracticaDuracion'),
+            $startMonth = $('#MesInicio'),
+            $salario = $('#SalarioOfrecido'),
+            $registerDate = $('#FechaRegistro'),
+            $EJefe = $('#EnvioEvaluacionJefe'),
+            $EAlumno = $('#EnvioFormatoInformeAlumno'),
+            $EEvaluador = $('#EnvioEvaluacionEvaluador'),
+            $RJefe = $('#RecepcionEvaluacionJefe'),
+            $RAlumno = $('#RecepcionInformeAlumno'),
+            $REvaluador = $('#RecepcionEvaluacionEvaluador');
+
+        $eventStartDate.datetimepicker({ format: "DD/MM/YYYY" });
+        $eventEndDate.datetimepicker({ format: "DD/MM/YYYY" });
+        $registerDate.datetimepicker({ format: "DD/MM/YYYY" });
+        $EJefe.datetimepicker({ format: "DD/MM/YYYY" });
+        $EAlumno.datetimepicker({ format: "DD/MM/YYYY" });
+        $EEvaluador.datetimepicker({ format: "DD/MM/YYYY" });
+        $RJefe.datetimepicker({ format: "DD/MM/YYYY" });
+        $RAlumno.datetimepicker({ format: "DD/MM/YYYY" });
+        $REvaluador.datetimepicker({ format: "DD/MM/YYYY" });
+
+        $eventStartDate.on('dp.change', function (e) {
+            $startMonth.val((e.date.format('MMMM')));
+            $eventEndDate.data('DateTimePicker').minDate(e.date);
+            var endDate = $eventEndDate.data('DateTimePicker').date();
+            if (endDate) {
+                $duration.val((endDate.diff(e.date) / 86400000).toFixed(0) + " días");
+            }
+        });
+
+        $eventEndDate.on('dp.change', function (e) {
+            $eventStartDate.data('DateTimePicker').maxDate(e.date);
+            var startDate = $eventStartDate.data('DateTimePicker').date();
+            if (startDate) {
+                $duration.val((e.date.diff(startDate) / 86400000).toFixed(0) + " días");
+            }
+        });
+
+    });
+
+
+    function cargarDatosAlumno(idAlumno) {
+        var url = '@Url.Action("BuscarDatosAlumno", "UTP")' + '?idAlumno=' + idAlumno;
+
+        $.get(url, function (alumno) {
+            $('#IdAlumno').val(alumno["IdAlumno"]);
+            $('#Carrera').val(alumno["Carrera"]);
+            $('#CorreoAlumno').val(alumno["CorreoAlumno"]);
+            $('#Ciclo').val(alumno["Ciclo"]);
+            $('#TelefonoCelular').val(alumno["TelefonoCelular"]);
+            $('#CodAlumnoUtp').val(alumno["CodAlumnoUtp"]);
+        });
+
+    }
+
+    function cargarDescripcionEmpresa(idEmpresa) {
+        var url = '@Url.Action("BuscarDatosEmpresas","Alumno")' + '?idEmpresa=' + idEmpresa;
+
+        $.get(url, function (empresa) {
+            $('#ValorSectorEmpresarial').val(empresa["ValorSectorEmpresarial"]);
+            $('#IdentificadorTributario').val(empresa["IdentificadorTributario"]);
+            $('#IdEmpresa').val(idEmpresa);
+        });
+    }
+</script>

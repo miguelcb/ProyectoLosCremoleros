@@ -27,6 +27,22 @@ namespace UTP.PortalEmpleabilidad.Modelo
 
         public string Estado { get; set; }
         public string ModificadoPor { get; set; }
+        [Required(ErrorMessage = Constantes.MSJ_CAMPO_OBLIGATORIO)]
+        public string ContratadosIDAT { get; set; }
+        public string NombreYApellido { get; set; }
+        public string ModalidadContrato { get; set; }
+         [Required(ErrorMessage = Constantes.MSJ_CAMPO_OBLIGATORIO)]
+        public string Puntualidad { get; set; }
+         [Required(ErrorMessage = Constantes.MSJ_CAMPO_OBLIGATORIO)]
+        public string ImagenPersonal { get; set; }
+         [Required(ErrorMessage = Constantes.MSJ_CAMPO_OBLIGATORIO)]
+        public string Conocimientos { get; set; }
+         [Required(ErrorMessage = Constantes.MSJ_CAMPO_OBLIGATORIO)]
+        public string Experiencia { get; set; }
+         [Required(ErrorMessage = Constantes.MSJ_CAMPO_OBLIGATORIO)]
+        public string Disponibilidad { get; set; }
+
+
        
     }
 }

@@ -74,7 +74,7 @@ namespace UTP.PortalEmpleabilidad.Datos
 
 
 
-        public DataTable BuscarFiltroOfertasAlumno(int IdAlumno, string PalabraClave, int PagActual, int NumRegistros)
+        public DataTable BuscarFiltroOfertasAlumno(int IdAlumno, string PalabraClave, string TipoTrabajoUTP, int PagActual, int NumRegistros)
         {
             DataTable dtResultado = new DataTable();
 
@@ -86,6 +86,7 @@ namespace UTP.PortalEmpleabilidad.Datos
                 cmd.CommandText = "Oferta_BusquedaFiltroAlumno";
                 cmd.Parameters.Add(new SqlParameter("@IdAlumno", SqlDbType.Int)).Value = IdAlumno;
                 cmd.Parameters.Add(new SqlParameter("@PalabraClave", SqlDbType.VarChar, 200)).Value = PalabraClave;
+                cmd.Parameters.Add(new SqlParameter("@TipoTrabajoUTP", SqlDbType.VarChar, 200)).Value = TipoTrabajoUTP;
                 cmd.Parameters.Add(new SqlParameter("@PagActual", SqlDbType.Int)).Value = PagActual;
                 cmd.Parameters.Add(new SqlParameter("@NumRegistros", SqlDbType.Int)).Value = NumRegistros;
 
@@ -181,6 +182,7 @@ namespace UTP.PortalEmpleabilidad.Datos
                 cmd.Parameters.Add(new SqlParameter("@Ubicacion", SqlDbType.VarChar, 100)).Value = entidad.Ubicacion == null ? "" : entidad.Ubicacion;
                 cmd.Parameters.Add(new SqlParameter("@Mensaje", SqlDbType.Int)).Value = entidad.IncluirMensaje ? 1 : 0;
                 cmd.Parameters.Add(new SqlParameter("@IdAlumno", SqlDbType.Int)).Value = entidad.IdAlumno;
+                cmd.Parameters.Add(new SqlParameter("@TipoTrabajoUTP", SqlDbType.VarChar, 100)).Value = entidad.TipoTrabajoUTP == null ? "" : entidad.TipoTrabajoUTP;
                 cmd.Parameters.Add(new SqlParameter("@PagActual", SqlDbType.Int)).Value = entidad.PaginaActual;
                 cmd.Parameters.Add(new SqlParameter("@NumRegistros", SqlDbType.Int)).Value = entidad.NumeroRegistros;
 
@@ -364,7 +366,7 @@ namespace UTP.PortalEmpleabilidad.Datos
                     cmd.Parameters.Add(new SqlParameter("@DuracionContrato", oferta.DuracionContrato));
                     cmd.Parameters.Add(new SqlParameter("@TipoCargo", oferta.TipoCargoIdListaValor)); //
                     cmd.Parameters.Add(new SqlParameter("@CargoOfrecido", oferta.CargoOfrecido));
-                    cmd.Parameters.Add(new SqlParameter("@RemuneracionOfrecida", oferta.RemuneracionOfrecida));
+                    cmd.Parameters.Add(new SqlParameter("@RemuneracionOfrecida" , (oferta.NumeroVacantes == null ? (object)DBNull.Value : oferta.RemuneracionOfrecida )));
                     cmd.Parameters.Add(new SqlParameter("@Horario", oferta.Horario));
                     cmd.Parameters.Add(new SqlParameter("@AreaEmpresa", oferta.AreaEmpresa));
                     cmd.Parameters.Add(new SqlParameter("@NumeroVacantes", (oferta.NumeroVacantes == null ? (object)DBNull.Value : oferta.NumeroVacantes ))); 
@@ -485,6 +487,7 @@ namespace UTP.PortalEmpleabilidad.Datos
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "OfertaEstudio_EliminarCarrerasUTP";
                         cmd.Parameters.Add(new SqlParameter("@IdOferta", oferta.IdOferta));
+                        cmd.Parameters.Add(new SqlParameter("@TipoDeEstudioPrincipal", Constantes.TIPO_ESTUDIO_PRINCIPAL));
                         cmd.ExecuteNonQuery();
 
                         //4. Se agregan las nuevas carreras:
@@ -619,6 +622,34 @@ namespace UTP.PortalEmpleabilidad.Datos
 
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "Oferta_ObtenerPostulantesPorIdOferta";
+                cmd.Parameters.Add(new SqlParameter("@IdOferta", idOferta));
+
+                cmd.Connection = conexion;
+
+                conexion.Open();
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+                dtResultado = new DataTable();
+
+                da.Fill(dtResultado);
+
+                conexion.Close();
+            }
+
+            return dtResultado;
+        }
+
+        public DataTable ObtenerPostulantesPorIdOfertaSimple(int idOferta)
+        {
+            DataTable dtResultado = new DataTable();
+
+            using (SqlConnection conexion = new SqlConnection(cadenaConexion))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "Oferta_ObtenerPostulantesPorIdOfertaSimple";
                 cmd.Parameters.Add(new SqlParameter("@IdOferta", idOferta));
 
                 cmd.Connection = conexion;
@@ -937,10 +968,19 @@ namespace UTP.PortalEmpleabilidad.Datos
                     cmd.Parameters.Add(new SqlParameter("@IdOferta", encuesta.IdOferta));
                     cmd.Parameters.Add(new SqlParameter("@Calificacion", encuesta.Calificacion));
                     cmd.Parameters.Add(new SqlParameter("@NroPostulantes", encuesta.NroPostulantes));
-                    cmd.Parameters.Add(new SqlParameter("@ContratadosUTP", encuesta.ContratadosUTP));
-                    cmd.Parameters.Add(new SqlParameter("@ContratadosOtros", encuesta.ContratadosOtros));
+                    cmd.Parameters.Add(new SqlParameter("@ContratadosUTP", DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@ContratadosOtros", DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@EstadoOferta", encuesta.Estado));
                     cmd.Parameters.Add(new SqlParameter("@ModificadoPor", encuesta.ModificadoPor));
+                   
+                    cmd.Parameters.Add(new SqlParameter("@EncuestaContratadosIDAT", (encuesta.ContratadosIDAT == "Si" ?  true : false)));
+                    cmd.Parameters.Add(new SqlParameter("@EncuestaNombreYApellidos", encuesta.NombreYApellido == null ? DBNull.Value.ToString() : encuesta.NombreYApellido));
+                    cmd.Parameters.Add(new SqlParameter("@EncuestaModalidadContrato", encuesta.ModalidadContrato == null ? DBNull.Value.ToString() : encuesta.ModalidadContrato));
+                    cmd.Parameters.Add(new SqlParameter("@EncuestaPuntualidad", encuesta.Puntualidad));
+                    cmd.Parameters.Add(new SqlParameter("@EncuestaImagenPersonal", encuesta.ImagenPersonal));
+                    cmd.Parameters.Add(new SqlParameter("@EncuestaConocimientos", encuesta.Conocimientos));
+                    cmd.Parameters.Add(new SqlParameter("@EncuestaExperiencia", encuesta.Experiencia));
+                    cmd.Parameters.Add(new SqlParameter("@EncuestaDisponibilidad", encuesta.Disponibilidad));
                     
                     cmd.Connection = conexion;
                     conexion.Open();
